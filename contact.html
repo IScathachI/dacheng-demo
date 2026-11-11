@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>联系我们 - 大成新华（演示站）</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body data-page="contact">
+<div id="site-header"></div>
+<main id="main">
+<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 联系我们</p><h1>联系我们</h1><p>在线留言与客服入口为演示体验。</p></div></div>
+<section><div class="wrap two">
+  <div>
+    <h2>联系方式</h2>
+    <ul class="contact-list">
+      <li><b>电话</b><span class="pending">待甲方提供</span></li>
+      <li><b>邮箱</b><span class="pending">待甲方提供</span></li>
+      <li><b>地址</b><span class="pending">待甲方提供</span></li><li><b>传真</b><span class="pending">待甲方提供</span></li><li><b>邮编</b><span class="pending">待甲方提供</span></li>
+      <li><b>QQ</b><span class="pending">账号缺失，待甲方提供</span></li>
+      <li><b>在线客服</b><button class="btn sm ghost" type="button" data-support>打开在线客服（演示）</button></li>
+    </ul>
+    <h3 style="margin-top:32px">微信公众号</h3>
+    <div class="qr-ph">公众号二维码<br>待提供</div>
+    <p style="font-size:.88rem;color:var(--muted);margin-top:8px">公众号仍在使用，二维码到位后在此展示。</p>
+  </div>
+  <div class="panel" id="form">
+    <h2 style="font-size:1.4rem">在线留言</h2>
+    <p class="notice">演示功能：提交后仅做校验，<b>内容未发送</b>，工作人员不会收到。</p>
+    <form data-kind="contact" aria-label="在线留言（演示）">
+      <div class="row">
+        <div class="field"><label for="f-name">姓名 <i>*</i></label><input id="f-name" name="name" required autocomplete="name"><div class="err" role="alert"></div></div>
+        <div class="field"><label for="f-org">单位名称</label><input id="f-org" name="org" autocomplete="organization"><div class="err" role="alert"></div></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="f-phone">联系电话 <i>*</i></label><input id="f-phone" name="phone" required inputmode="tel" autocomplete="tel"><div class="err" role="alert"></div></div>
+        <div class="field"><label for="f-mail">邮箱</label><input id="f-mail" name="email" type="email" autocomplete="email"><div class="err" role="alert"></div></div>
+      </div>
+      <div class="field"><label for="f-topic">咨询方向</label><select id="f-topic" name="topic"><option value="">请选择</option><option value="green">绿色印刷认证咨询</option><option value="system">管理体系咨询</option><option value="manage">管理提升咨询</option><option value="vocs">VOCs 控制咨询</option><option value="train">课程培训</option></select></div>
+      <div class="field"><label for="f-msg">留言内容 <i>*</i></label><textarea id="f-msg" name="msg" required minlength="10"></textarea><div class="err" role="alert"></div></div>
+      <button class="btn" type="submit">提交留言（演示）</button>
+    </form>
+  </div>
+</div></section>
+</main>
+<div id="site-footer"></div>
+<script src="js/main.js"></script>
+</body>
+</html>

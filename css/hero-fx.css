@@ -1,0 +1,92 @@
+/* ==========================================================================
+   大成新华演示站 · 首屏主视觉增强样式（第三版，独立模块，可整体移除）
+
+   配套脚本：js/hero-fx.js。脚本运行时才会在 .hero-visual 内创建下面这些层：
+     .hv-gl      WebGL 画布：原图 + 网点粒子（入场成像、自行漂动、印刷波、飘散、滚动散开）
+                 + 玻璃带的液态折射与虹彩 + 闪光点、微光尘 + 移动高光
+     .hv-pt      2D 画布：仅在降级时出现的少量墨点/光点
+     .hv-sheen   没有 WebGL（或读不到图片像素）时的替代：纯 CSS 的虹彩光泽
+     .fx-toggle  “暂停动效 / 开启动效”按钮
+
+   状态类（都加在 .hero-visual 上）：
+     .fx-on      效果已建立        .fx-run    正在连续绘制
+     .is-paused  用户手动暂停      .is-fallback 图片加载失败（由 main.css 处理成 SVG 回退）
+
+   没有脚本、动效关闭或“减少动效”时，这些层都不存在，面板里只有静态图片。
+   ========================================================================== */
+
+.hv-gl,
+.hv-pt,
+.hv-sheen{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+
+/* 画布首帧画好之后才淡入，避免闪一下空白；下面一直垫着同一张静态图 */
+.hv-gl{opacity:0;transition:opacity .15s ease}
+.hv-gl.is-ready{opacity:1}
+.hv-pt{opacity:0;transition:opacity .8s ease}
+.fx-on .hv-pt{opacity:1}
+
+/* 无 WebGL 时的虹彩光泽：一条蓝青—淡紫—浅粉的柔光带缓慢扫过图片 */
+.hv-sheen{
+  mix-blend-mode:soft-light;
+  opacity:.85;
+  background:
+    linear-gradient(112deg,transparent 32%,rgba(110,215,255,.6) 43%,rgba(160,150,255,.55) 50%,rgba(255,190,235,.45) 57%,transparent 68%);
+  background-size:280% 100%;
+  background-repeat:no-repeat;
+  background-position:140% 0;
+  animation:hv-sheen 9s ease-in-out infinite;
+  animation-play-state:paused;
+}
+.fx-run .hv-sheen{animation-play-state:running}
+@keyframes hv-sheen{
+  0%{background-position:140% 0}
+  60%,100%{background-position:-40% 0}
+}
+
+/* 暂停 / 开启按钮：始终可见、可用键盘操作 */
+.fx-toggle{
+  position:absolute;left:clamp(14px,2vw,28px);top:clamp(12px,1.8vw,24px);z-index:3;
+  display:inline-flex;align-items:center;gap:.55em;
+  min-height:40px;padding:.4em 1em .4em .85em;
+  border-radius:99px;border:1px solid rgba(18,20,22,.18);
+  background:rgba(255,255,255,.72);
+  -webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  color:var(--ink,#121416);font:inherit;font-size:.84rem;font-weight:600;line-height:1.2;white-space:nowrap;
+  cursor:pointer;
+  transition:background-color .2s,color .2s,border-color .2s;
+}
+.fx-toggle:hover{background:var(--ink,#121416);border-color:var(--ink,#121416);color:var(--paper,#f3f2ee)}
+.fx-toggle:focus-visible{outline:3px solid var(--blue,#1b49c8);outline-offset:3px}
+/* 图标：暂停时是两条竖线，已暂停时是播放三角 */
+.fx-toggle i{position:relative;display:block;width:10px;height:12px;flex:none}
+.fx-toggle i::before,
+.fx-toggle i::after{content:"";position:absolute;top:0;bottom:0;width:3px;border-radius:1px;background:currentColor}
+.fx-toggle i::before{left:0}
+.fx-toggle i::after{right:0}
+.is-paused .fx-toggle i::before{left:1px;width:0;height:0;background:none;border-radius:0;border-style:solid;border-width:6px 0 6px 9px;border-color:transparent transparent transparent currentColor}
+.is-paused .fx-toggle i::after{display:none}
+
+/* 全屏版（section.hero--full，860px 以上） */
+@media (min-width:860px){
+  /* 左上角是标题，按钮挪到右上角、图注下方 */
+  .hero--full .fx-toggle{left:auto;right:clamp(22px,4.6vw,72px);top:clamp(56px,5vw,74px)}
+  /* 入场更有冲击力：面板从画面中部的小窗口展开到铺满首屏，图片同时由略放大回到原位。
+     只在 motion.js 启用（.motion-ok）时生效；它关闭时面板直接完整显示。 */
+  .motion-ok .hero--full [data-reveal="clip"]:not(.is-done){transition:clip-path 1.25s var(--m-ease,ease) var(--d,0ms),opacity .5s ease var(--d,0ms)}
+  .motion-ok .hero--full [data-reveal="clip"]:not(.is-in){clip-path:inset(24% 20% 24% 20% round var(--r-xl,32px))}
+  .motion-ok .hero--full [data-reveal="clip"]:not(.is-done) .hv-zoom{transition:transform 1.5s var(--m-ease,ease) var(--d,0ms)}
+  .motion-ok .hero--full [data-reveal="clip"]:not(.is-in) .hv-zoom{transform:scale(1.14)}
+}
+
+/* 手机：按钮略小，贴在图片左上角 */
+@media (max-width:640px){
+  .fx-toggle{min-height:36px;font-size:.78rem;padding:.3em .85em .3em .75em}
+}
+
+/* 兜底：系统“减少动效”或打印时不显示任何连续效果层（脚本本身也不会创建它们） */
+@media (prefers-reduced-motion:reduce){
+  .hv-gl,.hv-pt,.hv-sheen,.fx-toggle{display:none!important}
+}
+@media print{
+  .hv-gl,.hv-pt,.hv-sheen,.fx-toggle{display:none!important}
+}

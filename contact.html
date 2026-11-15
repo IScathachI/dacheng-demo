@@ -4,16 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>联系我们 - 大成新华（演示站）</title>
+<meta name="theme-color" content="#f3f2ee">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/decor.css">
+<script src="js/motion.js"></script>
 </head>
 <body data-page="contact">
 <div id="site-header"></div>
 <main id="main">
-<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 联系我们</p><h1>联系我们</h1><p>在线留言与客服入口为演示体验。</p></div></div>
+<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 联系我们</p><h1 data-split>联系我们</h1><p data-reveal>在线留言与客服入口为演示体验。</p></div></div>
 <section><div class="wrap two">
-  <div>
-    <h2>联系方式</h2>
+  <div data-reveal>
+    <h2 style="font-size:clamp(1.5rem,2.6vw,2.2rem)">联系方式</h2>
     <ul class="contact-list">
       <li><b>电话</b><span class="pending">待甲方提供</span></li>
       <li><b>邮箱</b><span class="pending">待甲方提供</span></li>
@@ -21,12 +25,12 @@
       <li><b>QQ</b><span class="pending">账号缺失，待甲方提供</span></li>
       <li><b>在线客服</b><button class="btn sm ghost" type="button" data-support>打开在线客服（演示）</button></li>
     </ul>
-    <h3 style="margin-top:32px">微信公众号</h3>
+    <h3 style="margin-top:40px">微信公众号</h3>
     <div class="qr-ph">公众号二维码<br>待提供</div>
-    <p style="font-size:.88rem;color:var(--muted);margin-top:8px">公众号仍在使用，二维码到位后在此展示。</p>
+    <p style="font-size:.88rem;color:var(--muted);margin-top:10px">公众号仍在使用，二维码到位后在此展示。</p>
   </div>
-  <div class="panel" id="form">
-    <h2 style="font-size:1.4rem">在线留言</h2>
+  <div class="panel" id="form" data-reveal data-delay="100">
+    <h2 style="font-size:clamp(1.5rem,2.6vw,2.2rem)">在线留言</h2>
     <p class="notice">演示功能：提交后仅做校验，<b>内容未发送</b>，工作人员不会收到。</p>
     <form data-kind="contact" aria-label="在线留言（演示）">
       <div class="row">

@@ -4,16 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>案例示例 - 大成新华（演示站）</title>
+<meta name="theme-color" content="#f3f2ee">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/decor.css">
+<script src="js/motion.js"></script>
 </head>
 <body data-page="cases">
 <div id="site-header"></div>
 <main id="main">
-<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 案例</p><h1>案例示例</h1><p>每个示例按“需求—服务过程—预期交付”三步说明我们如何与企业合作，可按服务方向查看。</p></div></div>
+<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 案例</p><h1 data-split>案例示例</h1><p data-reveal>每个示例按“需求—服务过程—预期交付”三步说明我们如何与企业合作，可按服务方向查看。</p></div></div>
 <section><div class="wrap">
-  <div class="chips" id="case-chips" role="navigation" aria-label="案例专题"></div><p class="notice" id="case-note"></p>
-  <div class="cols c2" id="case-all"></div>
+  <div class="chips" id="case-chips" role="navigation" aria-label="案例专题" data-reveal></div><p class="notice" id="case-note" data-reveal></p>
+  <div class="case-grid" id="case-all" data-reveal-group></div>
 </div></section>
 </main>
 <div id="site-footer"></div>

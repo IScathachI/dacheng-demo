@@ -1,5 +1,7 @@
 /* 大成新华演示站 - 全站脚本（纯原生，无外部依赖）
-   内容均为演示样本，不含真实客户、业绩、资质或联系方式。 */
+   内容均为演示样本，不含真实客户、业绩、资质或联系方式。
+   本文件只负责：页头页脚、弹窗、演示内容数据、列表/详情渲染、筛选、表单与会员演示逻辑。
+   进入、分行、视差等动效在 js/motion.js（独立模块），本文件不依赖它。 */
 (function () {
   'use strict';
   document.documentElement.classList.remove('no-js');
@@ -11,6 +13,16 @@
     manage: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 40V8M8 40h34"/><path d="M14 32l8-9 6 5 10-13"/><path d="M33 15h5v5"/></svg>',
     vocs: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 20c6-6 10 6 18 0s12-6 18 0M6 30c6-6 10 6 18 0s12-6 18 0"/><circle cx="14" cy="10" r="2"/><circle cx="26" cy="8" r="2"/><circle cx="36" cy="11" r="2"/></svg>',
     train: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14l18-8 18 8-18 8z"/><path d="M14 19v11c0 3 5 6 10 6s10-3 10-6V19"/><path d="M42 14v14"/></svg>'
+  };
+
+  var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  /* 案例封面：按服务方向区分的原创几何构图（颜色由 css/main.css 的 .cv 类控制） */
+  var COVER = {
+    green: '<svg class="cv" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="l" width="640" height="400"/><g transform="rotate(-8 300 230)"><rect class="w" x="150" y="64" width="250" height="330" rx="8"/></g><g transform="rotate(4 340 230)"><rect class="p" x="212" y="54" width="250" height="330" rx="8"/><g class="m"><rect x="240" y="92" width="130" height="10" rx="3"/><rect x="240" y="116" width="194" height="6" rx="3"/><rect x="240" y="132" width="168" height="6" rx="3"/><rect x="240" y="148" width="186" height="6" rx="3"/></g></g><path class="sb" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M300 336c0-84 52-136 168-146 0 104-52 156-146 156"/><path class="sb" stroke-width="12" stroke-linecap="round" d="M298 346c30-52 62-84 104-104"/><g class="sk" stroke-width="2"><circle cx="556" cy="84" r="26"/><circle cx="556" cy="84" r="11"/><path d="M556 44v80M516 84h80"/></g><g><rect x="60" y="300" width="18" height="18" fill="#00aeef"/><rect x="80" y="300" width="18" height="18" fill="#ec008c"/><rect x="60" y="320" width="18" height="18" fill="#fff200"/><rect class="k" x="80" y="320" width="18" height="18"/></g></svg>',
+    vocs: '<svg class="cv" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="k" width="640" height="400"/><g stroke-width="3" stroke-linecap="round"><path class="sp" d="M-20 190c90-70 140 70 250 0s160-70 250 0 140 70 250 0"/><path class="sd" stroke-width="5" d="M-20 250c90-70 140 70 250 0s160-70 250 0 140 70 250 0"/><path class="sp" opacity=".4" d="M-20 310c90-70 140 70 250 0s160-70 250 0 140 70 250 0"/></g><g class="d"><circle cx="140" cy="104" r="8"/><circle cx="246" cy="74" r="5"/><circle cx="352" cy="112" r="10"/><circle cx="468" cy="70" r="6"/><circle cx="544" cy="118" r="4"/></g><g class="sp" stroke-width="1.5" opacity=".5"><path d="M56 40v32M40 56h32M584 328v32M568 344h32"/></g></svg>',
+    system: '<svg class="cv" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="b" width="640" height="400"/><g class="sw" stroke-width="3" stroke-linejoin="round"><path d="M190 160v52h260v-52M320 212v52"/></g><rect class="w" x="112" y="84" width="156" height="76" rx="12"/><rect class="w" x="372" y="84" width="156" height="76" rx="12"/><rect class="p" x="242" y="264" width="156" height="76" rx="12"/><g class="b"><rect x="136" y="110" width="78" height="8" rx="3"/><rect x="136" y="128" width="50" height="6" rx="3" opacity=".5"/><rect x="396" y="110" width="78" height="8" rx="3"/><rect x="396" y="128" width="50" height="6" rx="3" opacity=".5"/></g><g class="k"><rect x="266" y="290" width="78" height="8" rx="3"/><rect x="266" y="308" width="50" height="6" rx="3" opacity=".5"/></g><g class="sw" stroke-width="1.5" opacity=".45"><circle cx="566" cy="330" r="22"/><path d="M566 296v68M532 330h68"/></g></svg>',
+    manage: '<svg class="cv" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect class="g" width="640" height="400"/><g class="k"><rect x="130" y="250" width="58" height="92" rx="6"/><rect x="218" y="204" width="58" height="138" rx="6"/><rect x="306" y="232" width="58" height="110" rx="6"/><rect x="394" y="156" width="58" height="186" rx="6"/></g><path class="sk" stroke-width="2" d="M96 342h448"/><path class="sb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" d="M124 206l110-68 88 44 150-102"/><path class="sb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" d="M424 76h50v50"/><g class="sk" stroke-width="1.5" opacity=".5"><path d="M560 60v32M544 76h32"/></g></svg>'
   };
 
   var SERVICES = [
@@ -167,7 +179,7 @@
   window.DC = { openModal: openModal, toast: toast };
 
   /* ---------- 页头页脚 ---------- */
-  var LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="8" fill="#0b2545"/><path d="M9 13h13a9 9 0 010 18H9z" fill="none" stroke="#fff" stroke-width="3"/><path d="M26 11l5 18" stroke="#3fb6d3" stroke-width="3" stroke-linecap="round"/><circle cx="30.5" cy="10.5" r="2.2" fill="#3fb6d3"/></svg>';
+  var LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#121416"/><path d="M9 13h13a9 9 0 010 18H9z" fill="none" stroke="#f3f2ee" stroke-width="3"/><path d="M26 11l5 18" stroke="#86a3ff" stroke-width="3" stroke-linecap="round"/><circle cx="30.5" cy="10.5" r="2.2" fill="#86a3ff"/></svg>';
   var page = document.body.getAttribute('data-page') || '';
   function cur(p) { return page === p ? ' aria-current="page"' : ''; }
 
@@ -177,7 +189,7 @@
     var h = '<a class="skip" href="#main">跳到正文</a>';
     if (!sstore('dc_bar_closed')) h += '<div class="demo-bar" id="demo-bar">演示版网站：内容为样例，表单与会员功能仅作界面演示，不会发送或保存到服务器。<button aria-label="关闭提示">×</button></div>';
     h += '<header class="site-header"><div class="wrap"><a class="brand" href="index.html" aria-label="大成新华 首页">' + LOGO + '<span><b>大成新华</b><small>北京大成新华认证咨询有限公司</small></span></a>' +
-      '<button class="menu-btn" aria-expanded="false" aria-controls="nav" aria-label="展开导航"><svg width="22" height="22" viewBox="0 0 22 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h16M3 11h16M3 16h16"/></svg></button>' +
+      '<button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="展开导航"><span class="menu-ico" aria-hidden="true"><i></i><i></i></span></button>' +
       '<nav class="nav" id="nav" aria-label="主导航"><ul>' +
       '<li><a class="top" href="index.html"' + cur('home') + '>首页</a></li>' +
       '<li><a class="top" href="services.html"' + (page === 'services' ? ' aria-current="page"' : '') + '>服务</a><ul class="sub">' + sub + '</ul></li>' +
@@ -186,16 +198,20 @@
       '<li><a class="top" href="about.html"' + cur('about') + '>关于我们</a></li>' +
       '<li><a class="top" href="contact.html"' + cur('contact') + '>联系我们</a></li></ul>' +
       '<div class="nav-actions">' +
-      (m ? '<a class="btn sm ghost" href="member.html">会员中心</a>' : '<a class="btn sm ghost" href="login.html">会员登录</a><a class="btn sm" href="register.html">会员注册</a>') +
-      '<button class="btn sm ghost" data-support type="button">在线客服</button></div></nav></div></header>';
+      (m ? '<a class="btn sm ghost" href="member.html">会员中心</a>' : '<a class="nav-link" href="login.html">会员登录</a><a class="btn sm ghost" href="register.html">会员注册</a>') +
+      '<button class="btn sm" data-support type="button">在线客服</button></div></nav></div></header>';
     return h;
   }
   function buildFooter() {
-    return '<footer class="site-footer"><div class="wrap"><div class="foot-grid"><div><h4>北京大成新华认证咨询有限公司</h4><p>面向出版、印刷、发行企业的认证咨询、管理咨询与行业培训服务机构。我们提供咨询辅导，不发放认证证书。</p></div>' +
+    return '<footer class="site-footer"><div class="wrap">' +
+      '<div class="foot-top"><p class="foot-lead">面向出版、印刷、发行企业的认证咨询、管理咨询与行业培训服务机构。我们提供咨询辅导，不发放认证证书。</p>' +
+      '<div class="foot-cta"><a class="btn light" href="contact.html#form">在线留言</a><button class="btn ghost-light" data-support type="button">在线客服</button></div></div>' +
+      '<div class="foot-grid"><div><h4>北京大成新华认证咨询有限公司</h4><p>电话、邮箱、地址与公众号二维码待甲方提供，详见<a href="contact.html">联系我们</a>。</p></div>' +
       '<div><h4>服务</h4><ul>' + SERVICES.map(function (s) { return '<li><a href="service.html?id=' + s.id + '">' + s.name + '</a></li>'; }).join('') + '</ul></div>' +
-      '<div><h4>资讯与培训</h4><ul><li><a href="news.html">新闻与行业资讯</a></li><li><a href="training.html">课程培训</a></li><li><a href="resources.html">标准化资料 / 下载中心</a></li><li><a href="cases.html">案例示例</a></li></ul></div>' +
-      '<div><h4>联系与会员</h4><ul><li><a href="contact.html">联系我们 / 在线留言</a></li><li><a href="login.html">会员登录（演示）</a></li><li><a href="register.html">会员注册（演示）</a></li><li><a href="member.html">会员专享（演示）</a></li><li><a href="wechat-menu.html">公众号菜单对照</a></li><li><button class="btn sm ghost-light" data-support type="button">在线客服</button></li></ul></div></div>' +
-      '<div class="foot-bottom"><span>网站演示版 · 页面内容为样例，不代表真实客户、业绩或资质 · 备案与版权信息待甲方提供</span><span>公众号入口：<a href="index.html">大成官网</a> · <a href="news.html">新闻公告</a> · <a href="register.html">会员注册</a></span></div></div></footer>';
+      '<div><h4>资讯与培训</h4><ul><li><a href="news.html">新闻与行业资讯</a></li><li><a href="training.html">课程培训</a></li><li><a href="resources.html">标准化资料 / 下载中心</a></li><li><a href="cases.html">案例示例</a></li><li><a href="about.html">关于我们</a></li></ul></div>' +
+      '<div><h4>联系与会员</h4><ul><li><a href="contact.html">联系我们 / 在线留言</a></li><li><a href="login.html">会员登录（演示）</a></li><li><a href="register.html">会员注册（演示）</a></li><li><a href="member.html">会员专享（演示）</a></li><li><a href="wechat-menu.html">公众号菜单对照</a></li></ul></div></div>' +
+      '<div class="foot-bottom"><span>网站演示版 · 页面内容为样例，不代表真实客户、业绩或资质 · 备案与版权信息待甲方提供</span><span>公众号入口：<a href="index.html">大成官网</a> · <a href="news.html">新闻公告</a> · <a href="register.html">会员注册</a></span></div></div>' +
+      '<div class="foot-word" aria-hidden="true">大成新华</div></footer>';
   }
 
   function supportModal() {
@@ -223,6 +239,10 @@
     var btn = $('.menu-btn'), nav = $('#nav');
     function setNav(o) { nav.classList.toggle('open', o); btn.setAttribute('aria-expanded', String(o)); btn.setAttribute('aria-label', o ? '收起导航' : '展开导航'); }
     if (btn) btn.addEventListener('click', function () { setNav(!nav.classList.contains('open')); });
+    // Esc 收起展开的手机导航（弹窗打开时由弹窗自己处理 Esc）
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav && nav.classList.contains('open') && !$('.modal-back')) { setNav(false); btn.focus(); }
+    });
     var bar = $('#demo-bar'); if (bar) $('button', bar).addEventListener('click', function () { bar.remove(); sstore('dc_bar_closed', '1'); });
     document.addEventListener('click', function (e) {
       var sp = e.target.closest('[data-support]');
@@ -235,24 +255,49 @@
       var d = e.target.closest('[data-demo]');
       if (d) { e.preventDefault(); openModal(d.getAttribute('data-demo-title') || '演示功能', '<p>' + d.getAttribute('data-demo') + '</p>'); }
     });
-    // 页头装饰：套准十字
+    // 内页标题区装饰：印刷套准十字（data-parallax 由 js/motion.js 读取，没有该脚本时只是静态图形）
     $$('.page-hero').forEach(function (p) {
-      p.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 200 200" fill="none" stroke="#3fb6d3" stroke-width="1.5" aria-hidden="true"><circle cx="100" cy="100" r="60"/><circle cx="100" cy="100" r="34"/><path d="M100 10v180M10 100h180"/></svg>');
+      p.insertAdjacentHTML('beforeend', '<svg class="ph-mark" data-parallax="0.08" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="100" cy="100" r="62"/><circle cx="100" cy="100" r="34"/><path d="M100 8v184M8 100h184"/></svg>');
+      // 标题区下方的图片横幅：主视觉图的一个局部（每个栏目位置不同，见 css/decor.css），纯装饰
+      var w = $('.wrap', p);
+      if (w) w.insertAdjacentHTML('beforeend', '<div class="crop ph-band cropmarks" data-reveal="clip" aria-hidden="true"><img src="assets/hero-paper-glass-v3.jpg" alt="" loading="lazy" decoding="async" data-parallax="-0.08"><i class="cmyk"></i></div>');
     });
-    // 滚动显现
-    var rv = $$('.reveal');
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }); }, { threshold: .08 });
-      rv.forEach(function (x) { io.observe(x); });
-    } else rv.forEach(function (x) { x.classList.add('in'); });
   }
 
   /* ---------- 渲染：各列表/详情 ---------- */
   function svcCard(s, i) {
-    return '<a class="svc" href="service.html?id=' + s.id + '"><span class="num">0' + (i + 1) + '</span>' + ICON[s.icon] + '<h3>' + s.name + '</h3><p>' + s.short + '</p><span class="more">了解详情 →</span></a>';
+    return '<a class="svc-row" href="service.html?id=' + s.id + '"><span class="svc-num">0' + (i + 1) + '</span><h3 class="svc-name">' + s.name + '</h3><p class="svc-desc">' + s.short + '</p><span class="svc-ico">' + ICON[s.icon] + '</span><span class="svc-go" aria-hidden="true">' + ARROW + '</span></a>';
+  }
+  /* 服务翻牌（第三版，首页使用）：正面编号+名称，背面简介+详情链接。
+     翻面按钮与详情链接是两个独立控件；交互在 js/flip.js，样式在 css/flip.css。
+     没有 flip.js 或动效关闭时，这就是一张把两面内容都展开的静态卡片。 */
+  var FLIP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0113.7-5.7L20 8.5"/><path d="M20 4v4.5h-4.5"/><path d="M20 12a8 8 0 01-13.7 5.7L4 15.5"/><path d="M4 20v-4.5h4.5"/></svg>';
+  // 每张服务卡正面的封面：把主视觉图放大到不同部位（[放大倍数, 放大中心]），五张各不相同（纯装饰）
+  var FLIP_COVER = {
+    green: [2.3, '18% 70%'],    // 蓝色墨浪
+    system: [2.6, '66% 32%'],   // 半调网点
+    manage: [2.2, '52% 48%'],   // 玻璃与纸张交叉处
+    vocs: [2.4, '86% 78%'],     // 虹彩焦散
+    train: [2.0, '30% 34%']     // 玻璃带边缘
+  };
+  function svcFlip(s, i) {
+    var href = 'service.html?id=' + s.id, n = '0' + (i + 1), bid = 'flip-back-' + s.id;
+    return '<article class="flip"><div class="flip-turn"><div class="flip-inner">' +
+      '<div class="flip-face flip-front">' +
+      '<span class="flip-cover" aria-hidden="true" style="--z:' + (FLIP_COVER[s.id] || [1.6])[0] + ';--zo:' + (FLIP_COVER[s.id] || [0, '50% 50%'])[1] + '"><img src="assets/hero-paper-glass-v3.jpg" alt="" loading="lazy" decoding="async"><i class="cmyk"></i></span>' +
+      '<div class="flip-top"><span class="flip-num">' + n + '</span><span class="flip-ico">' + ICON[s.icon] + '</span></div>' +
+      '<h3 class="flip-name">' + s.name + '</h3>' +
+      '<button class="flip-btn" type="button" data-flip-to="back" aria-expanded="false" aria-controls="' + bid + '">' + FLIP_ICON + '<span>查看简介</span></button></div>' +
+      '<div class="flip-face flip-back" id="' + bid + '" role="group" aria-label="' + s.name + ' 简介" tabindex="-1">' +
+      '<div class="flip-top"><span class="flip-num">' + n + '</span><span class="flip-back-name">' + s.name + '</span></div>' +
+      '<p class="flip-desc">' + s.short + '</p>' +
+      '<div class="flip-acts"><a class="btn sm light" href="' + href + '">了解详情</a><button class="flip-btn flip-btn--back" type="button" data-flip-to="front">' + FLIP_ICON + '<span>翻回正面</span></button></div></div>' +
+      '</div></div></article>';
   }
   function caseCard(c) {
-    return '<article class="card"><div class="meta"><span class="badge">演示内容</span><span>' + c.tag + '</span></div><h3>' + c.title + '</h3><dl class="case-steps"><dt>需求</dt><dd>' + c.need + '</dd><dt>服务过程</dt><dd>' + c.doing.split('→').map(function (x) { return x.trim().replace(/。$/, ''); }).join(' → ') + '</dd><dt>预期交付</dt><dd>' + c.result.replace('预期交付：', '') + '</dd></dl><span class="spacer"></span><a class="link-arrow" href="case.html?id=' + c.id + '">查看完整示例</a></article>';
+    var href = 'case.html?id=' + c.id;
+    return '<article class="case-card"><a class="case-cover" href="' + href + '" tabindex="-1" aria-hidden="true">' + (COVER[c.topic] || COVER.green) + '<span class="case-idx">示例 0' + (CASES.indexOf(c) + 1) + '</span></a>' +
+      '<div class="case-body"><div class="meta"><span class="badge">演示内容</span><span>' + c.tag + '</span></div><h3><a href="' + href + '">' + c.title + '</a></h3><dl class="case-steps"><dt>需求</dt><dd>' + c.need + '</dd><dt>服务过程</dt><dd>' + c.doing.split('→').map(function (x) { return x.trim().replace(/。$/, ''); }).join(' → ') + '</dd><dt>预期交付</dt><dd>' + c.result.replace('预期交付：', '') + '</dd></dl><span class="spacer"></span><a class="link-arrow" href="' + href + '">查看完整示例</a></div></article>';
   }
   /* 专题筛选条：链接形式（?topic=xxx），支持直接打开/刷新；未知参数回退到“全部” */
   function topicOf(list) { var t = qs('topic'); return list.some(function (x) { return x.k === t; }) ? t : 'all'; }
@@ -274,7 +319,7 @@
     if (!$('#news-all')) return;
     function draw(t) {
       var items = NEWS.filter(function (n) { return t === 'all' || n.topic === t; });
-      fill('#news-all', items.map(newsItem).join('') || '<li style="padding:24px">该专题暂无演示内容。</li>');
+      fill('#news-all', items.map(newsItem).join('') || '<li class="empty">该专题暂无演示内容。</li>');
     }
     var cur = topicOf(NEWS_TOPICS); draw(cur); topicBar('#news-chips', NEWS_TOPICS, cur, draw);
   }
@@ -282,26 +327,28 @@
     if (!$('#case-all')) return;
     function draw(t) {
       var items = CASES.filter(function (c) { return t === 'all' || c.topic === t; });
-      fill('#case-all', items.map(function (c) { return '<div>' + caseCard(c) + '</div>'; }).join('') || '<p>该专题暂无演示内容。</p>');
+      fill('#case-all', items.map(caseCard).join('') || '<p>该专题暂无演示内容。</p>');
       var n = $('#case-note'); if (n) n.innerHTML = t === 'green' ? '<b>绿色印刷方向：</b>真实服务案例须经客户授权并核实后发布；下列为虚拟演示样例，不是已完成的业绩。' : '<b>演示内容：</b>以下均为虚拟场景样例，不是真实客户、合作单位或已完成业绩。正式案例须经客户授权并核实后发布。';
     }
     var cur = topicOf(CASE_TOPICS); draw(cur); topicBar('#case-chips', CASE_TOPICS, cur, draw);
   }
   function newsItem(n, i) {
-    return '<li><a href="article.html?id=' + n.id + '"><span class="tag">' + n.tag + '<br><span class="badge">演示内容</span></span><span><h3>' + n.title + '</h3><p>' + n.sum + '</p></span><span class="link-arrow">阅读</span></a></li>';
+    return '<li><a href="article.html?id=' + n.id + '"><div class="news-tag"><span class="tag">' + n.tag + '</span><span class="badge">演示内容</span></div><div class="news-main"><h3>' + n.title + '</h3><p>' + n.sum + '</p></div><span class="link-arrow">阅读</span></a></li>';
   }
   function fill(id, html) { var e = $(id); if (e) e.innerHTML = html; }
 
   function renderLists() {
-    fill('#svc-grid', SERVICES.map(svcCard).join(''));
-    fill('#case-home', CASES.slice(0, 3).map(function (c) { return '<div class="reveal">' + caseCard(c) + '</div>'; }).join(''));
+    // 服务列表：容器带 data-view="flip" 时输出翻牌卡片（首页），否则输出编号行（服务总览页，便于整页扫读）
+    var sg = $('#svc-grid');
+    if (sg) sg.innerHTML = SERVICES.map(sg.getAttribute('data-view') === 'flip' ? svcFlip : svcCard).join('');
+    fill('#case-home', CASES.slice(0, 3).map(caseCard).join(''));
     fill('#news-home', NEWS.slice(0, 3).map(newsItem).join(''));
     fill('#course-home', COURSES.slice(0, 3).map(courseCard).join(''));
     fill('#course-all', COURSES.map(courseCard).join(''));
     renderNewsPage(); renderCasePage();
   }
   function courseCard(c) {
-    return '<article class="card"><div class="meta"><span class="badge">演示内容</span><span>' + c.form + '</span></div><h3>' + c.name + '</h3><p>面向：' + c.aud + '</p><p>时间、地点、费用：待正式通知。</p><span class="spacer"></span><button class="btn sm" type="button" data-enroll="' + c.id + '">体验报名</button></article>';
+    return '<article class="card course"><div class="course-main"><div class="meta"><span class="badge">演示内容</span><span>' + c.form + '</span></div><h3>' + c.name + '</h3><p>面向：' + c.aud + '</p><p>时间、地点、费用：待正式通知。</p></div><button class="btn sm ghost" type="button" data-enroll="' + c.id + '">体验报名</button></article>';
   }
 
   function renderService() {
@@ -311,10 +358,10 @@
     $('#svc-title').textContent = s.name; $('#svc-intro').textContent = s.short;
     var li = function (a) { return '<ul>' + a.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>'; };
     root.innerHTML = '<div class="article"><h2>服务简介</h2><p>' + s.intro + '</p><h2>适用对象</h2>' + li(s.fit) + '<h2>服务内容</h2>' + li(s.scope) +
-      '<h2 id="process">服务流程</h2><ol>' + s.process.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol><h2 id="deliver">预期交付物</h2>' + li(s.deliver) +
+      '<h2 id="process">服务流程</h2><ol class="flow">' + s.process.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol><h2 id="deliver">预期交付物</h2>' + li(s.deliver) +
       '<p class="disclaimer">说明：本机构是咨询服务机构，不是发证机构；不直接颁发证书，不承诺认证或审核结果。</p></div>' +
       '<aside><div class="panel"><h3>咨询该服务</h3><p style="font-size:.92rem;color:var(--muted)">留下需求，体验咨询流程（演示，内容不会发送）。</p><a class="btn" href="contact.html?topic=' + s.id + '#form">咨询方案</a></div>' +
-      '<div class="panel"><h3>其他服务</h3><ul style="margin:0;font-size:.95rem">' + SERVICES.filter(function (x) { return x !== s; }).map(function (x) { return '<li><a href="service.html?id=' + x.id + '">' + x.name + '</a></li>'; }).join('') + '</ul></div></aside>';
+      '<div class="panel"><h3>其他服务</h3><ul>' + SERVICES.filter(function (x) { return x !== s; }).map(function (x) { return '<li><a href="service.html?id=' + x.id + '">' + x.name + '</a></li>'; }).join('') + '</ul></div></aside>';
   }
   function renderCase() {
     var root = $('#case-root'); if (!root) return;
@@ -322,7 +369,7 @@
     document.title = c.title + ' - 大成新华（演示站）';
     $('#case-title').textContent = c.title;
     root.innerHTML = '<div class="article"><p class="notice"><b>演示内容：</b>以下为虚拟的服务场景样例，用于展示“需求—服务过程—预期交付”的呈现方式，并非真实客户或已完成业绩。</p>' +
-      '<h2>客户需求</h2><p>' + c.need + '</p><h2>服务过程</h2><ol>' + c.doing.split('→').map(function (x) { return '<li>' + x.trim() + '</li>'; }).join('') + '</ol><h2>预期交付</h2><p>' + c.result + '</p>' +
+      '<h2>客户需求</h2><p>' + c.need + '</p><h2>服务过程</h2><ol class="flow">' + c.doing.split('→').map(function (x) { return '<li>' + x.trim() + '</li>'; }).join('') + '</ol><h2>预期交付</h2><p>' + c.result + '</p>' +
       '<p><a class="btn" href="contact.html#form">就类似需求咨询</a> <a class="btn ghost" href="cases.html">返回案例列表</a></p></div>' +
       '<aside><div class="panel"><h3>相关服务</h3><p><a href="services.html">查看全部服务</a></p></div></aside>';
   }
@@ -332,7 +379,7 @@
     document.title = n.title + ' - 大成新华（演示站）';
     $('#article-title').textContent = n.title;
     root.innerHTML = '<div class="article"><p><span class="badge">演示内容</span> <span style="color:var(--muted)">' + n.tag + '</span></p>' + n.body.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '<p><a class="btn ghost" href="news.html">返回资讯列表</a></p></div>' +
-      '<aside><div class="panel"><h3>更多资讯</h3><ul style="margin:0">' + NEWS.filter(function (x) { return x !== n; }).map(function (x) { return '<li><a href="article.html?id=' + x.id + '">' + x.title + '</a></li>'; }).join('') + '</ul></div></aside>';
+      '<aside><div class="panel"><h3>更多资讯</h3><ul>' + NEWS.filter(function (x) { return x !== n; }).map(function (x) { return '<li><a href="article.html?id=' + x.id + '">' + x.title + '</a></li>'; }).join('') + '</ul></div></aside>';
   }
   function renderResources() {
     var root = $('#res-root'); if (!root) return;
@@ -436,6 +483,4 @@
   /* ---------- 启动 ---------- */
   initLayout();
   renderLists(); renderService(); renderCase(); renderArticle(); renderResources(); renderMember(); initForms(); scrollToHash();
-  // 列表渲染后的新元素也参与显现
-  $$('.reveal').forEach(function (x) { x.classList.add('in'); });
 })();

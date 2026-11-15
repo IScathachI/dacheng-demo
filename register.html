@@ -4,16 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>会员注册（演示） - 大成新华</title>
+<meta name="theme-color" content="#f3f2ee">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/decor.css">
+<script src="js/motion.js"></script>
 </head>
 <body data-page="register">
 <div id="site-header"></div>
 <main id="main">
-<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 会员注册</p><h1>会员注册 <span class="badge">演示功能</span></h1><p>对应公众号菜单“会员注册”的网站入口。</p></div></div>
-<section><div class="wrap" style="max-width:620px">
-  <p class="notice"><b>演示功能：</b>不接真实数据库或微信授权，<b>不收集真实密码</b>。创建的演示账号仅保存在本浏览器。请勿填写真实敏感信息。</p>
-  <div class="panel">
+<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 会员注册</p><h1 data-split>会员注册 <span class="badge">演示功能</span></h1><p data-reveal>对应公众号菜单“会员注册”的网站入口。</p></div></div>
+<section><div class="wrap narrow">
+  <p class="notice" data-reveal><b>演示功能：</b>不接真实数据库或微信授权，<b>不收集真实密码</b>。创建的演示账号仅保存在本浏览器。请勿填写真实敏感信息。</p>
+  <div class="panel" data-reveal data-delay="80">
     <form data-kind="register" aria-label="会员注册（演示）">
       <div class="field"><label for="r-nick">昵称 <i>*</i></label><input id="r-nick" name="nick" required maxlength="20"><div class="err" role="alert"></div></div>
       <div class="field"><label for="r-org">单位类型 <i>*</i></label><select id="r-org" name="org" required><option value="">请选择</option><option>出版单位</option><option>印刷企业</option><option>发行企业</option><option>其他</option></select><div class="err" role="alert"></div></div>

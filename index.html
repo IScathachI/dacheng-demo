@@ -5,114 +5,232 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>大成新华 - 出版印刷行业认证咨询与管理提升（演示站）</title>
 <meta name="description" content="北京大成新华认证咨询有限公司：面向出版、印刷、发行企业的绿色印刷认证咨询、管理体系咨询、VOCs 控制咨询与行业培训。网站演示版。">
+<meta name="theme-color" content="#f3f2ee">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="assets/hero-paper-glass-v3.jpg">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/hero-fx.css">
+<link rel="stylesheet" href="css/flip.css">
+<link rel="stylesheet" href="css/decor.css">
+<link rel="stylesheet" href="css/intro.css">
+<script src="js/motion.js"></script>
+<!-- 出场特效：必须在 <head> 里、motion.js 之后同步加载，才能在页面显示前决定是否播放 -->
+<script src="js/intro.js"></script>
 </head>
 <body data-page="home">
 <div id="site-header"></div>
 <main id="main">
 
-<section class="hero" style="padding-bottom:80px">
-  <div class="wrap">
-    <div>
-      <p class="eyebrow">出版 · 印刷 · 发行 行业咨询</p>
-      <h1>让绿色与规范，<br><span>成为印刷出版企业的日常能力</span></h1>
-      <p class="lead">为出版、印刷、发行企业提供绿色印刷认证咨询、管理体系咨询、管理提升、VOCs 控制咨询与标准培训。我们是咨询机构，帮助企业把要求落到现场与记录里。</p>
-      <div class="hero-cta">
-        <a class="btn" href="services.html">了解服务</a>
-        <a class="btn ghost" href="contact.html#form">咨询方案</a>
+<!-- 首屏：全屏版（hero--full，860px 以上）——主视觉铺满首屏，标题与入口叠在图片上；窄屏上文下图。
+     去掉 section 上的 hero--full 即回到第三版的“图文并列”版式，其余结构与脚本不用改。
+     data-fx-avoid：告诉 js/hero-fx.js 这些文字块下方的粒子少动一些，闪光点和微光尘在其范围内几乎隐去。 -->
+<section class="hero hero--full" aria-labelledby="hero-title">
+  <div class="hero-stage">
+    <div class="hero-head">
+      <div class="hero-title" data-fx-avoid>
+        <p class="eyebrow" data-reveal data-delay="300">出版 · 印刷 · 发行 行业咨询</p>
+        <h1 class="display" id="hero-title" data-split data-delay="300">
+          <span class="ln">让绿色与规范，</span>
+          <span class="ln">成为印刷出版企业的</span>
+          <span class="ln"><em>日常能力</em></span>
+        </h1>
       </div>
-      <p class="hero-note">说明：我们不是发证机构，不直接颁发证书，也不承诺认证结果；认证由具备资质的认证机构独立实施。</p>
+      <div class="hero-intro" data-reveal data-delay="500" data-fx-avoid>
+        <p class="lead">为出版、印刷、发行企业提供绿色印刷认证咨询、管理体系咨询、管理提升、VOCs 控制咨询与标准培训。我们是咨询机构，帮助企业把要求落到现场与记录里。</p>
+        <div class="hero-cta">
+          <a class="btn" href="services.html">了解服务</a>
+          <a class="btn ghost" href="contact.html#form">咨询方案</a>
+        </div>
+      </div>
     </div>
-    <svg class="hero-art" viewBox="0 0 480 420" role="img" aria-label="层叠纸张与印刷套准标记的示意图">
-      <defs>
-        <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="2" fill="#0e7c99" opacity=".55"/></pattern>
-        <pattern id="dots2" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.2" fill="#0b2545" opacity=".5"/></pattern>
-      </defs>
-      <g transform="rotate(-8 240 210)"><rect x="90" y="60" width="270" height="320" rx="6" fill="#dfeaf3"/></g>
-      <g transform="rotate(5 240 210)"><rect x="100" y="50" width="270" height="320" rx="6" fill="#fff" stroke="#c9d7e6"/><rect x="100" y="50" width="270" height="110" rx="6" fill="url(#dots)"/></g>
-      <rect x="120" y="60" width="270" height="320" rx="6" fill="#fff" stroke="#b7c8dc"/>
-      <rect x="120" y="60" width="270" height="86" rx="6" fill="#0b2545"/>
-      <rect x="146" y="88" width="120" height="10" rx="2" fill="#fff"/>
-      <rect x="146" y="108" width="80" height="6" rx="2" fill="#3fb6d3"/>
-      <g fill="#c4d2e3"><rect x="146" y="176" width="218" height="7" rx="2"/><rect x="146" y="194" width="200" height="7" rx="2"/><rect x="146" y="212" width="218" height="7" rx="2"/><rect x="146" y="230" width="150" height="7" rx="2"/></g>
-      <rect x="146" y="262" width="100" height="90" rx="3" fill="url(#dots2)"/>
-      <path d="M262 340c0-30 20-50 70-56 0 36-22 56-60 56" fill="none" stroke="#0e7c99" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      <g fill="none" stroke="#0e7c99" stroke-width="2"><circle cx="410" cy="60" r="22"/><circle cx="410" cy="60" r="10"/><path d="M410 28v64M378 60h64"/></g>
-      <g fill="none" stroke="#0b2545" stroke-width="2"><circle cx="70" cy="360" r="14"/><path d="M70 336v48M46 360h48"/></g>
-      <g><rect x="60" y="120" width="14" height="14" fill="#00aeef"/><rect x="76" y="120" width="14" height="14" fill="#ec008c"/><rect x="60" y="136" width="14" height="14" fill="#fff200"/><rect x="76" y="136" width="14" height="14" fill="#231f20"/></g>
-    </svg>
+
+  <!-- 主视觉：原创抽象纸张与玻璃图片（本地 JPG，约 237 KiB）。
+       js/hero-fx.js 会在 .hv-zoom 里叠加 WebGL 网点粒子与玻璃光泽层（自行运动，不跟随鼠标），并插入“暂停动效”按钮；
+       图片加载失败时 onerror 给 figure 加 .is-fallback，改为显示下面第二版的 SVG 构图。 -->
+  <figure class="hero-visual" data-reveal="clip" data-hero-fx>
+    <div class="hv-zoom">
+      <div class="hv-fallback">
+      <svg class="hv-bg" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <pattern id="hv-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="3.4" fill="#3f68e8"/></pattern>
+          <radialGradient id="hv-fade" cx="74%" cy="46%" r="52%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+          <mask id="hv-mask"><rect width="1600" height="700" fill="url(#hv-fade)"/></mask>
+        </defs>
+        <rect width="1600" height="700" fill="#121416"/>
+        <rect width="1600" height="700" fill="url(#hv-dots)" mask="url(#hv-mask)" opacity=".6"/>
+        <g stroke="#3d424a" stroke-width="1.5" fill="none">
+          <path d="M64 40v36M46 58h36M1536 40v36M1518 58h36M64 624v36M46 642h36M1536 624v36M1518 642h36"/>
+          <path d="M0 349.5h1600" stroke-dasharray="2 10" opacity=".7"/>
+        </g>
+      </svg>
+      <svg class="hv-mark" data-parallax="0.09" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+        <circle cx="100" cy="100" r="64"/><circle cx="100" cy="100" r="36"/><circle cx="100" cy="100" r="6" fill="currentColor" stroke="none"/><path d="M100 6v188M6 100h188"/>
+      </svg>
+      <svg class="hv-sheets" data-parallax="-0.05" viewBox="0 0 640 660" role="img" aria-label="层叠印张、色标与套准标记的示意图">
+        <defs><pattern id="hv-half" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="2.2" fill="#121416" opacity=".55"/></pattern></defs>
+        <g transform="rotate(-10 300 340)"><rect x="70" y="70" width="420" height="540" rx="10" fill="#1b49c8"/></g>
+        <g transform="rotate(5 320 340)">
+          <rect x="110" y="56" width="420" height="540" rx="10" fill="#d5d2ca"/>
+          <rect x="110" y="56" width="420" height="150" rx="10" fill="url(#hv-half)"/>
+        </g>
+        <g transform="rotate(-2 340 330)">
+          <rect x="150" y="40" width="420" height="540" rx="10" fill="#f3f2ee"/>
+          <path d="M150 50a10 10 0 0110-10h400a10 10 0 0110 10v106H150z" fill="#121416"/>
+          <rect x="184" y="80" width="176" height="14" rx="3" fill="#f3f2ee"/>
+          <rect x="184" y="108" width="112" height="8" rx="3" fill="#86a3ff"/>
+          <g fill="#c9c6bd"><rect x="184" y="196" width="352" height="9" rx="3"/><rect x="184" y="220" width="318" height="9" rx="3"/><rect x="184" y="244" width="352" height="9" rx="3"/><rect x="184" y="268" width="230" height="9" rx="3"/></g>
+          <rect x="184" y="316" width="150" height="150" rx="4" fill="url(#hv-half)"/>
+          <path d="M372 470c0-64 40-104 132-112 0 78-42 118-116 118" fill="none" stroke="#1b49c8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M370 480c24-42 50-66 84-82" fill="none" stroke="#1b49c8" stroke-width="9" stroke-linecap="round"/>
+          <g><rect x="184" y="512" width="26" height="26" fill="#00aeef"/><rect x="212" y="512" width="26" height="26" fill="#ec008c"/><rect x="240" y="512" width="26" height="26" fill="#fff200"/><rect x="268" y="512" width="26" height="26" fill="#231f20"/></g>
+          <g fill="#121416"><rect x="330" y="512" width="26" height="26" opacity=".12"/><rect x="358" y="512" width="26" height="26" opacity=".28"/><rect x="386" y="512" width="26" height="26" opacity=".46"/><rect x="414" y="512" width="26" height="26" opacity=".66"/><rect x="442" y="512" width="26" height="26" opacity=".86"/></g>
+          <g fill="none" stroke="#121416" stroke-width="2"><circle cx="520" cy="525" r="13"/><path d="M520 504v42M499 525h42"/></g>
+        </g>
+      </svg>
+      </div>
+      <img class="hv-photo" src="assets/hero-paper-glass-v3.jpg" width="1672" height="941" decoding="async" fetchpriority="high"
+           alt="原创抽象纸张与玻璃视觉：弯曲的白色纸张、蓝色半调网点，与一条带虹彩光泽的透明玻璃带"
+           onerror="this.closest('.hero-visual').classList.add('is-fallback');this.closest('.hero').classList.add('has-fallback')">
+    </div>
+    <div class="hv-tags">
+      <p>服务方向</p>
+      <ul>
+        <li><a class="hv-tag" href="service.html?id=green">绿色印刷认证咨询</a></li>
+        <li><a class="hv-tag" href="service.html?id=system">管理体系咨询</a></li>
+        <li><a class="hv-tag" href="service.html?id=manage">管理提升咨询</a></li>
+        <li><a class="hv-tag" href="service.html?id=vocs">VOCs 控制咨询</a></li>
+        <li><a class="hv-tag" href="training.html">课程培训</a></li>
+      </ul>
+    </div>
+    <figcaption><span class="hv-cap-photo">原创抽象纸张与玻璃视觉</span><span class="hv-cap-svg">原创示意图 · 印张、色标与套准标记</span></figcaption>
+  </figure>
+
+    <p class="hero-note" data-reveal data-delay="500">说明：我们不是发证机构，不直接颁发证书，也不承诺认证结果；认证由具备资质的认证机构独立实施。</p>
+    <!-- 全屏版右下角的“继续浏览”入口（真实锚点链接，键盘可达）；其他版式下隐藏 -->
+    <a class="hero-scroll" href="#about">继续浏览<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
 </section>
 
-<div class="audience"><div class="wrap"><strong>服务对象</strong><span>出版社</span><span class="sep">·</span><span>印刷企业</span><span class="sep">·</span><span>发行企业</span><span class="sep">·</span><span>印制、环保与质量管理部门</span></div></div>
+<!-- 网点飘落分隔条：首屏网点向下飘落后，在这里落定（js/dot-fall.js；没有脚本时是一条静态网点） -->
+<div class="wrap"><div class="dot-rule" data-dotfall aria-hidden="true"></div></div>
 
-<section id="services">
+<!-- 关键词走马灯（css/decor.css）：读屏软件读下面这一行文字，滚动的两条对读屏隐藏；鼠标悬停或点首屏“暂停动效”可停下 -->
+<section class="marquee" aria-label="服务关键词">
+  <p class="sr-only">绿色印刷认证、管理体系、精细管理、VOCs 控制、行业标准培训；标准宣贯、差距分析、记录与台账、内审辅导、现场改善、申报准备、持续改进</p>
+  <div class="mq-track" aria-hidden="true">
+    <div class="mq-row"><span class="mq-item">绿色印刷认证</span><i class="mq-dot"></i><span class="mq-item is-outline">管理体系</span><i class="mq-dot"></i><span class="mq-item is-blue">精细管理</span><i class="mq-dot"></i><span class="mq-item is-outline">VOCs 控制</span><i class="mq-dot"></i><span class="mq-item">行业标准培训</span><i class="mq-dot"></i></div>
+    <div class="mq-row"><span class="mq-item">绿色印刷认证</span><i class="mq-dot"></i><span class="mq-item is-outline">管理体系</span><i class="mq-dot"></i><span class="mq-item is-blue">精细管理</span><i class="mq-dot"></i><span class="mq-item is-outline">VOCs 控制</span><i class="mq-dot"></i><span class="mq-item">行业标准培训</span><i class="mq-dot"></i></div>
+  </div>
+  <div class="mq-track is-small" aria-hidden="true">
+    <div class="mq-row"><span class="mq-item">标准宣贯</span><i class="cmyk"></i><span class="mq-item">差距分析</span><i class="cmyk"></i><span class="mq-item">记录与台账</span><i class="cmyk"></i><span class="mq-item">内审辅导</span><i class="cmyk"></i><span class="mq-item">现场改善</span><i class="cmyk"></i><span class="mq-item">申报准备</span><i class="cmyk"></i><span class="mq-item">持续改进</span><i class="cmyk"></i></div>
+    <div class="mq-row"><span class="mq-item">标准宣贯</span><i class="cmyk"></i><span class="mq-item">差距分析</span><i class="cmyk"></i><span class="mq-item">记录与台账</span><i class="cmyk"></i><span class="mq-item">内审辅导</span><i class="cmyk"></i><span class="mq-item">现场改善</span><i class="cmyk"></i><span class="mq-item">申报准备</span><i class="cmyk"></i><span class="mq-item">持续改进</span><i class="cmyk"></i></div>
+  </div>
+</section>
+
+<!-- 服务对象 -->
+<section class="strip" aria-label="服务对象">
   <div class="wrap">
-    <div class="sec-head"><div><p class="eyebrow">服务</p><h2>围绕印刷出版全链条的五类服务</h2></div><a class="link-arrow" href="services.html">服务总览</a></div>
-    <div class="svc-grid" id="svc-grid"></div>
+    <dl class="strip-row" data-reveal-group>
+      <dt>服务对象</dt>
+      <dd>出版社</dd>
+      <dd>印刷企业</dd>
+      <dd>发行企业</dd>
+      <dd>印制、环保与质量管理部门</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- 公司介绍：定位陈述 -->
+<section id="about" data-index="01">
+  <div class="wrap split">
+    <div class="split-label" data-reveal>
+      <p class="eyebrow">公司介绍</p>
+      <h2>北京大成新华认证咨询有限公司</h2>
+      <!-- 主视觉图的一个局部（蓝色墨浪），带轻微视差；纯装饰 -->
+      <figure class="crop crop--about cropmarks" data-reveal="clip" aria-hidden="true">
+        <img src="assets/hero-paper-glass-v3.jpg" alt="" loading="lazy" decoding="async" data-parallax="-0.07">
+        <figcaption><i class="cmyk"></i>网点 · 纸张 · 玻璃</figcaption>
+      </figure>
+    </div>
+    <div class="split-body">
+      <p class="statement-text" data-scrub><span class="seg">专注出版、印刷、发行领域的咨询服务机构，</span><span class="seg">以清晰的方法、</span><span class="seg">克制的承诺</span><span class="seg">和可执行的交付，</span><span class="seg">陪伴企业完成绿色与规范化建设。</span></p>
+      <ul class="pillars" data-reveal-group>
+        <li><b>行业聚焦</b><span>出版、印刷、发行企业的实际场景。</span></li>
+        <li><b>咨询定位</b><span>咨询辅导机构，不发证，不承诺认证结果。</span></li>
+        <li><b>交付导向</b><span>以差距报告、整改清单、记录模板等可核对的成果为准。</span></li>
+      </ul>
+      <p data-reveal><a class="btn ghost" href="about.html">了解公司</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- 服务：翻牌（正面编号与名称，背面简介与详情入口；js/flip.js 负责交互，关闭动效时为静态卡片） -->
+<section id="services" style="padding-top:0" data-index="02">
+  <div class="wrap">
+    <div class="dot-rule" data-dotfall aria-hidden="true"></div>
+    <div class="sec-head" data-reveal><div><p class="eyebrow">服务</p><h2>围绕印刷出版全链条的五类服务</h2></div><a class="link-arrow" href="services.html">服务总览</a></div>
+    <div class="flip-grid" id="svc-grid" data-view="flip" data-flip-grid data-reveal-group></div>
     <noscript><p>请启用 JavaScript 以查看服务列表，或访问 <a href="services.html">服务总览</a>。</p></noscript>
   </div>
 </section>
 
-<section class="alt" id="process">
+<!-- 流程：浅色辅助面板 -->
+<section class="sec-tint" id="process" data-index="03">
   <div class="wrap">
-    <div class="sec-head"><div><p class="eyebrow">服务流程</p><h2>从诊断到落地，五步推进</h2></div></div>
-    <ol class="steps">
-      <li><h3>沟通诊断</h3><p>了解企业业务、工艺与诉求，确认服务范围。</p></li>
-      <li><h3>差距分析</h3><p>对照相关要求，形成问题与整改清单。</p></li>
-      <li><h3>方案与辅导</h3><p>完善制度、记录与现场做法，开展培训。</p></li>
-      <li><h3>自查预审</h3><p>组织内部自查，提前发现并整改问题。</p></li>
-      <li><h3>对接与改进</h3><p>协助对接认证机构或主管要求，持续改进。</p></li>
+    <div class="sec-head" data-reveal><div><p class="eyebrow">服务流程</p><h2>从诊断到落地，五步推进</h2></div></div>
+    <!-- data-steps：js/steps.js 让进度线随滚动推进，走到哪一步那一步点亮；没有脚本或关闭动效时五步全部点亮 -->
+    <ol class="steps" data-steps data-reveal-group>
+      <li><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12v9H9l-4 3v-3H4z"/><circle cx="16.5" cy="15.5" r="3.5"/><path d="M19 18l2.5 2.5"/></svg></span><h3>沟通诊断</h3><p>了解企业业务、工艺与诉求，确认服务范围。</p></li>
+      <li><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M6 20v-6M11 20V8M16 20v-9"/><path d="M5 9l5-5 4 3 6-4" stroke-dasharray="2 2.5"/></svg></span><h3>差距分析</h3><p>对照相关要求，形成问题与整改清单。</p></li>
+      <li><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg></span><h3>方案与辅导</h3><p>完善制度、记录与现场做法，开展培训。</p></li>
+      <li><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5L7.5 11M3.5 18l1.5 1.5L7.5 17"/></svg></span><h3>自查预审</h3><p>组织内部自查，提前发现并整改问题。</p></li>
+      <li><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 01-14 5.3M4 12a8 8 0 0114-5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></span><h3>对接与改进</h3><p>协助对接认证机构或主管要求，持续改进。</p></li>
     </ol>
   </div>
 </section>
 
-<section id="cases">
+<!-- 案例：带封面的大卡片 -->
+<section id="cases" data-index="04">
   <div class="wrap">
-    <div class="sec-head"><div><p class="eyebrow">案例示例</p><h2>需求、过程与预期交付</h2><p class="lead" style="margin:0">以下为虚拟的演示场景，不是真实客户或已完成业绩。</p></div><a class="link-arrow" href="cases.html">全部示例</a></div>
-    <div class="cols c3" id="case-home"></div>
+    <div class="dot-rule" data-dotfall aria-hidden="true"></div>
+    <div class="sec-head" data-reveal><div><p class="eyebrow">案例示例</p><h2>需求、过程与预期交付</h2><p class="lead">以下为虚拟的演示场景，不是真实客户或已完成业绩。</p></div><a class="link-arrow" href="cases.html">全部示例</a></div>
+    <div class="case-grid case-grid--feature" id="case-home" data-reveal-group></div>
   </div>
 </section>
 
-<section class="alt" id="news">
+<!-- 资讯与培训：白色面板内的紧凑列表 -->
+<section class="sec-panel" id="news" data-index="05">
   <div class="wrap two">
     <div>
-      <div class="sec-head"><div><p class="eyebrow">资讯</p><h2>行业资讯</h2></div><a class="link-arrow" href="news.html">更多</a></div>
-      <ul class="news-list" id="news-home"></ul>
+      <div class="sec-head sm" data-reveal><div><p class="eyebrow">资讯</p><h2>行业资讯</h2></div><a class="link-arrow" href="news.html">更多</a></div>
+      <ul class="news-list" id="news-home" data-reveal-group></ul>
     </div>
     <div>
-      <div class="sec-head"><div><p class="eyebrow">培训</p><h2>课程培训</h2></div><a class="link-arrow" href="training.html">全部课程</a></div>
-      <div class="cols" id="course-home"></div>
+      <div class="sec-head sm" data-reveal><div><p class="eyebrow">培训</p><h2>课程培训</h2></div><a class="link-arrow" href="training.html">全部课程</a></div>
+      <div class="course-list" id="course-home" data-reveal-group></div>
     </div>
   </div>
 </section>
 
-<section id="about">
-  <div class="wrap two">
-    <div>
-      <p class="eyebrow">公司介绍</p>
-      <h2>北京大成新华认证咨询有限公司</h2>
-      <p class="lead">专注出版、印刷、发行领域的咨询服务机构，以清晰的方法、克制的承诺和可执行的交付，陪伴企业完成绿色与规范化建设。</p>
-      <a class="btn ghost" href="about.html">了解公司</a>
-    </div>
-    <ul class="facts">
-      <li><b>行业聚焦：</b>出版、印刷、发行企业的实际场景。</li>
-      <li><b>咨询定位：</b>咨询辅导机构，不发证，不承诺认证结果。</li>
-      <li><b>交付导向：</b>以差距报告、整改清单、记录模板等可核对的成果为准。</li>
-    </ul>
-  </div>
-</section>
+<div class="wrap"><div class="dot-rule" data-dotfall aria-hidden="true"></div></div>
 
+<!-- 联系入口：蓝底上叠一张单色化的主视觉局部（纯装饰） -->
 <section class="cta" id="contact-cta">
+  <img class="cta-img" src="assets/hero-paper-glass-v3.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" data-parallax="0.06">
   <div class="wrap">
-    <div class="cta-box"><h2>告诉我们您的需求</h2><p>留言、在线客服与会员入口均为演示体验，内容不会发送。联系电话、邮箱与 QQ 待甲方提供。</p></div>
-    <div class="hero-cta"><a class="btn light" href="contact.html#form">在线留言</a><button class="btn ghost-light" type="button" data-support>在线客服</button><a class="btn ghost-light" href="register.html">会员注册</a></div>
+    <div class="cta-box"><h2 data-split>告诉我们您的需求</h2><p data-reveal>留言、在线客服与会员入口均为演示体验，内容不会发送。联系电话、邮箱与 QQ 待甲方提供。</p></div>
+    <div class="hero-cta" data-reveal><a class="btn light" href="contact.html#form">在线留言</a><button class="btn ghost-light" type="button" data-support>在线客服</button><a class="btn ghost-light" href="register.html">会员注册</a></div>
   </div>
 </section>
 
 </main>
 <div id="site-footer"></div>
 <script src="js/main.js"></script>
+<!-- 第三版增强：都放在 main.js 之后；任何一个加载失败都不影响内容阅读 -->
+<script src="js/flip.js"></script>
+<script src="js/hero-fx.js"></script>
+<script src="js/dot-fall.js"></script>
+<script src="js/steps.js"></script>
 </body>
 </html>

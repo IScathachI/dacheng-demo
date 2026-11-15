@@ -4,29 +4,135 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>关于我们 - 大成新华（演示站）</title>
+<meta name="theme-color" content="#f3f2ee">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/decor.css">
+<script src="js/motion.js"></script>
 </head>
 <body data-page="about">
 <div id="site-header"></div>
 <main id="main">
-<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 关于我们</p><h1>关于我们</h1><p>北京大成新华认证咨询有限公司</p></div></div>
-<section><div class="wrap two">
-  <div class="article">
-    <h2 id="intro">大成简介</h2>
-    <p>北京大成新华认证咨询有限公司，主要面向出版、印刷、发行企业，提供绿色印刷认证咨询、管理体系咨询、管理提升、VOCs 控制咨询与行业标准培训。</p>
-    <h2>我们的定位</h2>
-    <p>我们是咨询机构，不是发证机构。我们帮助企业理解要求、梳理现状、规范记录并做好准备；认证由具备资质的认证机构依其程序独立实施，我们不直接颁证，也不承诺认证结果。</p>
-    <h2 id="footprint">我们的足迹</h2><p class="notice">这里将展示公司参加的培训、会议与行业活动。具体活动记录与照片<span class="pending">待核实后补充</span>，演示站暂不编写具体事件。</p><h2>关注我们</h2>
-    <p>欢迎关注“大成新华”微信公众号，获取公司动态与行业资讯（公众号二维码<span class="pending">待提供</span>）。您也可以直接查看本站的<a href="news.html">新闻与公司动态</a>、<a href="training.html">课程培训</a>，或<a href="register.html">注册会员（演示）</a>了解会员专享资料。</p>
+<div class="page-hero"><div class="wrap"><p class="crumbs"><a href="index.html">首页</a> / 关于我们</p><h1 data-split>关于我们</h1><p data-reveal>北京大成新华认证咨询有限公司</p></div></div>
+
+<!-- 01 大成简介 -->
+<section>
+  <div class="wrap split">
+    <div class="split-label" data-reveal>
+      <p class="eyebrow">01</p>
+      <h2 id="intro">大成简介</h2>
+    </div>
+    <div class="split-body">
+      <p class="statement-text" data-scrub><span class="seg">北京大成新华认证咨询有限公司，</span><span class="seg">主要面向出版、印刷、发行企业，</span><span class="seg">提供绿色印刷认证咨询、</span><span class="seg">管理体系咨询、</span><span class="seg">管理提升、</span><span class="seg">VOCs 控制咨询</span><span class="seg">与行业标准培训。</span></p>
+      <ul class="tag-links" data-reveal-group aria-label="服务方向">
+        <li><a class="chip" href="service.html?id=green">绿色印刷认证咨询</a></li>
+        <li><a class="chip" href="service.html?id=system">管理体系咨询</a></li>
+        <li><a class="chip" href="service.html?id=manage">管理提升咨询</a></li>
+        <li><a class="chip" href="service.html?id=vocs">VOCs 控制咨询</a></li>
+        <li><a class="chip" href="training.html">行业标准培训</a></li>
+      </ul>
+    </div>
   </div>
-  <div>
-    <ul class="facts"><li>成立时间、注册资本、资质与荣誉：<span class="pending">待公司提供</span></li><li>最新简介文本与配图：<span class="pending">待公司提供</span></li><li>团队与专家介绍：<span class="pending">待公司提供</span></li><li>合作单位与客户授权案例：<span class="pending">待公司提供并经授权</span></li></ul>
-    <p class="disclaimer" style="margin-top:24px">本演示站不展示任何未经核实的资质编号、业绩数字或客户名称。</p>
+  <div class="wrap">
+    <figure class="about-visual" data-reveal="clip">
+      <svg viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><pattern id="ab-dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="3" fill="#1b49c8" opacity=".35"/></pattern></defs>
+        <rect width="1400" height="600" fill="#e4eaf8"/>
+        <rect x="820" y="0" width="580" height="600" fill="url(#ab-dots)"/>
+        <g transform="rotate(-6 520 300)"><rect x="330" y="70" width="380" height="480" rx="10" fill="#fff"/></g>
+        <g transform="rotate(3 600 300)">
+          <rect x="420" y="50" width="380" height="480" rx="10" fill="#f3f2ee"/>
+          <g fill="#c9c6bd"><rect x="456" y="96" width="170" height="12" rx="3"/><rect x="456" y="126" width="300" height="8" rx="3"/><rect x="456" y="148" width="264" height="8" rx="3"/><rect x="456" y="170" width="290" height="8" rx="3"/></g>
+          <path d="M470 250h120a112 112 0 010 224H470z" fill="none" stroke="#121416" stroke-width="20"/>
+          <path d="M656 236l52 216" stroke="#1b49c8" stroke-width="20" stroke-linecap="round"/>
+          <circle cx="702" cy="232" r="14" fill="#1b49c8"/>
+        </g>
+        <g fill="none" stroke="#121416" stroke-width="1.5"><circle cx="1090" cy="300" r="120"/><circle cx="1090" cy="300" r="66"/><path d="M1090 130v340M920 300h340"/></g>
+        <g fill="none" stroke="#121416" stroke-width="1.5" opacity=".6"><path d="M70 50v36M52 68h36M70 514v36M52 532h36"/></g>
+        <g><rect x="150" y="430" width="30" height="30" fill="#00aeef"/><rect x="182" y="430" width="30" height="30" fill="#ec008c"/><rect x="214" y="430" width="30" height="30" fill="#fff200"/><rect x="246" y="430" width="30" height="30" fill="#231f20"/></g>
+      </svg>
+      <figcaption><span class="pending">配图待公司提供</span><span>当前为原创示意图</span></figcaption>
+    </figure>
   </div>
-</div></section>
+</section>
+
+<!-- 网点飘落分隔条（js/dot-fall.js；没有脚本时是一条静态网点） -->
+<div class="wrap"><div class="dot-rule" data-dotfall aria-hidden="true"></div></div>
+
+<!-- 02 我们的定位 -->
+<section class="sec-dark" aria-labelledby="pos-title">
+  <div class="wrap">
+    <div data-reveal><p class="eyebrow">02</p><h2 id="pos-title" style="font-size:clamp(1.35rem,2.1vw,1.9rem);font-weight:600;letter-spacing:0">我们的定位</h2></div>
+    <p class="pos-quote" data-split><span class="ln">我们是咨询机构，</span><span class="ln">不是<em>发证机构</em>。</span></p>
+    <div class="pos-cols" data-reveal-group>
+      <div><h3>我们做什么</h3><p>帮助企业理解要求、梳理现状、规范记录并做好准备。</p></div>
+      <div><h3>认证由谁实施</h3><p>认证由具备资质的认证机构依其程序独立实施。</p></div>
+      <div><h3>我们不做什么</h3><p>不直接颁证，也不承诺认证结果。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 我们的足迹 -->
+<section>
+  <div class="wrap split">
+    <div class="split-label" data-reveal>
+      <p class="eyebrow">03</p>
+      <h2 id="footprint">我们的足迹</h2>
+    </div>
+    <div class="split-body">
+      <p class="notice" data-reveal>这里将展示公司参加的培训、会议与行业活动。具体活动记录与照片<span class="pending">待核实后补充</span>，演示站暂不编写具体事件。</p>
+      <ol class="timeline-ph" data-reveal-group aria-label="足迹栏目版式占位">
+        <li><b>培训</b><span>时间、地点与内容</span><span class="pending">待核实后补充</span></li>
+        <li><b>会议</b><span>时间、地点与内容</span><span class="pending">待核实后补充</span></li>
+        <li><b>行业活动</b><span>时间、地点与内容</span><span class="pending">待核实后补充</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 04 公司资料 -->
+<section class="sec-panel">
+  <div class="wrap split">
+    <div class="split-label" data-reveal>
+      <p class="eyebrow">04</p>
+      <h2>公司资料</h2>
+    </div>
+    <div class="split-body">
+      <dl class="spec" data-reveal-group>
+        <div><dt>成立时间、注册资本、资质与荣誉</dt><dd><span class="pending">待公司提供</span></dd></div>
+        <div><dt>最新简介文本与配图</dt><dd><span class="pending">待公司提供</span></dd></div>
+        <div><dt>团队与专家介绍</dt><dd><span class="pending">待公司提供</span></dd></div>
+        <div><dt>合作单位与客户授权案例</dt><dd><span class="pending">待公司提供并经授权</span></dd></div>
+      </dl>
+      <p class="disclaimer" data-reveal>本演示站不展示任何未经核实的资质编号、业绩数字或客户名称。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 关注我们 -->
+<section>
+  <div class="wrap split">
+    <div class="split-label" data-reveal>
+      <p class="eyebrow">05</p>
+      <h2>关注我们</h2>
+    </div>
+    <div class="split-body follow" data-reveal>
+      <div class="qr-ph">公众号二维码<br>待提供</div>
+      <p>欢迎关注“大成新华”微信公众号，获取公司动态与行业资讯（公众号二维码<span class="pending">待提供</span>）。您也可以直接查看本站的<a href="news.html">新闻与公司动态</a>、<a href="training.html">课程培训</a>，或<a href="register.html">注册会员（演示）</a>了解会员专享资料。</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div class="cta-box"><h2 data-split>告诉我们您的需求</h2><p data-reveal>留言与在线客服均为演示体验，内容不会发送。联系电话、邮箱与 QQ 待甲方提供。</p></div>
+    <div class="hero-cta" data-reveal><a class="btn light" href="contact.html#form">在线留言</a><button class="btn ghost-light" type="button" data-support>在线客服</button></div>
+  </div>
+</section>
 </main>
 <div id="site-footer"></div>
 <script src="js/main.js"></script>
+<script src="js/dot-fall.js"></script>
 </body>
 </html>

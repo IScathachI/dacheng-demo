@@ -1,0 +1,98 @@
+/* ==========================================================================
+   大成新华演示站 · 动效样式（独立模块，可整体移除）
+
+   原则：内容默认可见。只有 js/motion.js 成功加载、浏览器支持
+   IntersectionObserver、且用户没有开启“减少动效”时，脚本才会给 <html>
+   加上 .motion-ok，下面的“进入前隐藏状态”才会生效。
+
+   在 HTML 上使用的约定（data-* 属性）：
+     data-reveal            单个元素上移淡入（可选值：fade / clip）
+     data-reveal-group      其直接子元素依次进入
+     data-split             标题逐行进入（行用 <span class="ln"> 标出，可省略）
+     data-scrub             文字分段随滚动点亮（段用 <span class="seg"> 标出）
+     data-parallax="0.06"   很轻的装饰性视差（仅桌面、精确指针设备）
+     data-delay="120"       额外延迟（毫秒）
+   ========================================================================== */
+
+:root{
+  --m-ease:cubic-bezier(.2,.7,.2,1);
+  --m-dur:.6s;          /* 区块进入 400–650ms */
+  --m-rise:28px;
+}
+
+/* ---------- 进入：单个元素 / 分组子元素 ---------- */
+.motion-ok [data-reveal]:not(.is-done),
+.motion-ok [data-reveal-group]>*:not(.is-done){
+  transition:opacity var(--m-dur) var(--m-ease) var(--d,0ms),transform var(--m-dur) var(--m-ease) var(--d,0ms);
+  will-change:opacity,transform;
+}
+.motion-ok [data-reveal]:not(.is-in),
+.motion-ok [data-reveal-group]>*:not(.is-in){
+  opacity:0;
+  transform:translate3d(0,var(--m-rise),0);
+}
+.motion-ok [data-reveal="fade"]:not(.is-in){transform:none}
+
+/* ---------- 大图进入：裁切展开 + 内层轻微缩放 ---------- */
+.motion-ok [data-reveal="clip"]:not(.is-done){
+  transition:clip-path .9s var(--m-ease) var(--d,0ms),opacity .45s ease var(--d,0ms);
+  will-change:clip-path,opacity;
+}
+.motion-ok [data-reveal="clip"]:not(.is-in){
+  opacity:0;
+  transform:none;
+  clip-path:inset(9% 5% 9% 5% round var(--r-xl,32px));
+}
+.motion-ok [data-reveal="clip"].is-in:not(.is-done){clip-path:inset(0 0 0 0 round var(--r-xl,32px))}
+.motion-ok [data-reveal="clip"]:not(.is-done) .hv-zoom{transition:transform 1.2s var(--m-ease) var(--d,0ms)}
+.motion-ok [data-reveal="clip"]:not(.is-in) .hv-zoom{transform:scale(1.07)}
+
+/* ---------- 标题逐行进入 ---------- */
+.motion-ok [data-split]:not(.is-split){visibility:hidden}
+.motion-ok [data-split]:not(.is-done) .ln{overflow:hidden;padding:.12em 0;margin:-.12em 0}
+.motion-ok [data-split] .ln-i{display:block}
+.motion-ok [data-split]:not(.is-done) .ln-i{
+  transition:transform .8s var(--m-ease) calc(var(--d,0ms) + var(--i,0) * 90ms);
+  will-change:transform;
+}
+.motion-ok [data-split]:not(.is-in) .ln-i{transform:translate3d(0,110%,0)}
+
+/* ---------- 文字分段点亮（未点亮时仍保持大字号可读对比度） ---------- */
+.motion-ok [data-scrub].is-scrub .seg{color:var(--seg-off,#8a877f);transition:color .45s ease}
+.motion-ok [data-scrub].is-scrub .seg.on{color:inherit}
+
+/* ---------- 轻视差 ---------- */
+.motion-ok [data-parallax]{transform:translate3d(0,var(--py,0px),0);will-change:transform}
+
+/* ---------- 组件内的进入细节 ---------- */
+/* 流程：顶部蓝线随步骤画出 */
+.motion-ok .steps>li::after{transform:scaleX(0);transition:transform .9s var(--m-ease) calc(var(--d,0ms) + .15s)}
+.motion-ok .steps>li.is-in::after{transform:none}
+
+/* ---------- 小屏：缩短位移与时长 ---------- */
+@media (max-width:760px){
+  :root{--m-rise:16px;--m-dur:.5s}
+  .motion-ok [data-reveal="clip"]:not(.is-in){clip-path:inset(5% 3% 5% 3% round var(--r-xl,24px))}
+}
+
+/* ---------- 兜底：减少动效 / 打印时一律直接显示 ---------- */
+@media (prefers-reduced-motion:reduce){
+  .motion-ok [data-reveal],
+  .motion-ok [data-reveal-group]>*{opacity:1!important;transform:none!important;clip-path:none!important}
+  .motion-ok [data-split]{visibility:visible!important}
+  .motion-ok [data-split] .ln-i,
+  .motion-ok [data-parallax],
+  .motion-ok .hv-zoom,
+  .motion-ok .steps>li::after{transform:none!important}
+  .motion-ok [data-scrub] .seg{color:inherit!important}
+}
+@media print{
+  .motion-ok [data-reveal],
+  .motion-ok [data-reveal-group]>*{opacity:1!important;transform:none!important;clip-path:none!important}
+  .motion-ok [data-split]{visibility:visible!important}
+  .motion-ok [data-split] .ln-i,
+  .motion-ok [data-parallax],
+  .motion-ok .hv-zoom,
+  .motion-ok .steps>li::after{transform:none!important}
+  .motion-ok [data-scrub] .seg{color:inherit!important}
+}

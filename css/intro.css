@@ -1,0 +1,46 @@
+/* ==========================================================================
+   大成新华演示站 · 首页出场特效样式（独立模块，可整体移除）
+
+   配套脚本：js/intro.js（在 <head> 里同步加载）。
+     html.intro-on   脚本决定播放时立即加上：先用一层纸色把页面盖住，避免页面先闪一下再被遮罩盖住
+     .intro          全屏遮罩：画布（网点拼出“大成新华”）、副标题、操作提示、“跳过开场”按钮
+     .intro.is-out   退场：遮罩淡出，下面的首屏开始入场
+
+   没有脚本、动效关闭、系统“减少动效”、带锚点打开、从站内链接回到首页时都不会出现。
+   ========================================================================== */
+
+html.intro-on{overflow:hidden}
+html.intro-on::after{content:"";position:fixed;inset:0;z-index:9998;background:#f3f2ee}
+
+.intro{position:fixed;inset:0;z-index:9999;background:#f3f2ee;cursor:pointer;-webkit-user-select:none;user-select:none;
+  transition:opacity .75s ease .1s,visibility 0s linear .85s}
+.intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.intro.is-out{opacity:0;visibility:hidden;pointer-events:none}
+
+.intro{touch-action:none}
+/* 文字中心在画面高度 46% 处（与 js/intro.js 一致），副标题紧贴在字的下方 */
+.intro-sub{position:absolute;left:0;right:0;top:calc(46% + var(--ih,200px) / 2 + clamp(14px,2.4vh,30px));
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:0 20px;
+  font-size:clamp(.82rem,1.3vw,1.05rem);font-weight:600;letter-spacing:.32em;color:#2c3035;
+  opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.intro-sub i{display:inline-block;width:46px;height:9px;flex:none;
+  background:linear-gradient(90deg,#00aeef 0 25%,#ec008c 0 50%,#fff200 0 75%,#231f20 0)}
+.intro.is-formed .intro-sub{opacity:1;transform:none}
+
+.intro-hint{position:absolute;left:0;right:0;bottom:clamp(22px,6vh,56px);text-align:center;
+  font-size:.8rem;letter-spacing:.14em;color:#636870;opacity:0;transition:opacity .6s ease .4s}
+.intro.is-formed .intro-hint{opacity:1}
+
+.intro-skip{position:absolute;right:clamp(14px,3vw,32px);top:clamp(14px,3vw,28px);
+  min-height:40px;padding:.4em 1.1em;border-radius:99px;border:1px solid rgba(18,20,22,.2);background:rgba(255,255,255,.7);
+  color:#121416;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;transition:background-color .2s,color .2s}
+.intro-skip:hover{background:#121416;color:#f3f2ee}
+.intro-skip:focus-visible{outline:3px solid #1b49c8;outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  html.intro-on{overflow:auto}
+  html.intro-on::after,.intro{display:none!important}
+}
+@media print{
+  html.intro-on::after,.intro{display:none!important}
+}

@@ -1,0 +1,214 @@
+/* ==========================================================================
+   大成新华演示站 · 版面点缀（独立模块，可整体移除）
+
+   让首屏以下的页面不那么“干”：只用现有的一张主视觉图（assets/hero-paper-glass-v3.jpg，
+   浏览器已缓存，不增加下载量）和纯 CSS 图形，不引入新素材、不编造任何数据。
+
+     01 工具：读屏专用文字、CMYK 色标、裁切标记
+     02 关键词走马灯（首页首屏下方）
+     03 区块大号描边编号（section[data-index]）
+     04 半调网点纹理（流程区、案例区、页脚大字）
+     05 大图局部穿插（首页公司介绍、联系区、各内页标题区的图片横幅）
+     06 网点飘落分隔条（.dot-rule；动画由 js/dot-fall.js 负责，这里是静态样子）
+     07 暂停、减少动效、打印
+     08 服务流程时间线（首页 .steps[data-steps]，进度由 js/steps.js 计算）
+
+   连续动画（走马灯、网点纹理缓慢流动）只在 motion.js 启用（html.motion-ok）时播放；
+   首屏“暂停动效”按钮会给 <html> 加 .fx-paused，这些动画随之一起停下。
+   ========================================================================== */
+
+/* ---------- 01 工具 ---------- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* CMYK 色标条：青、品红、黄、黑 */
+.cmyk{display:inline-block;width:52px;height:10px;flex:none;background:linear-gradient(90deg,#00aeef 0 25%,#ec008c 0 50%,#fff200 0 75%,#231f20 0)}
+
+/* 裁切标记：四个角上的细线，像印张上的裁切线 */
+.cropmarks{position:relative}
+.cropmarks::before{
+  content:"";position:absolute;inset:14px;z-index:2;pointer-events:none;
+  --cm:rgba(255,255,255,.85);
+  background:
+    linear-gradient(var(--cm),var(--cm)) 0 0/18px 1px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 0 0/1px 18px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 100% 0/18px 1px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 100% 0/1px 18px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 0 100%/18px 1px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 0 100%/1px 18px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 100% 100%/18px 1px no-repeat,
+    linear-gradient(var(--cm),var(--cm)) 100% 100%/1px 18px no-repeat;
+}
+
+/* ---------- 02 关键词走马灯 ---------- */
+.marquee{padding:clamp(14px,2.4vw,30px) 0 clamp(10px,1.6vw,18px);overflow:hidden;border-bottom:1px solid var(--line)}
+.mq-track{display:flex;width:max-content}
+.mq-row{display:flex;align-items:center;flex:none;gap:clamp(18px,2.6vw,44px);padding-right:clamp(18px,2.6vw,44px)}
+.mq-item{font-size:clamp(2.2rem,6.4vw,6rem);font-weight:500;line-height:1.15;letter-spacing:-.02em;white-space:nowrap;color:var(--ink)}
+.mq-item.is-outline{color:transparent;-webkit-text-stroke:1.2px var(--ink)}
+.mq-item.is-blue{color:var(--blue)}
+/* 分隔符：3×3 的半调小网点，越往右下越小 */
+.mq-dot{width:clamp(22px,3.2vw,46px);height:clamp(22px,3.2vw,46px);flex:none;
+  background:
+    radial-gradient(circle,var(--blue) 0 46%,transparent 48%) 0 0/33.4% 33.4%;
+  -webkit-mask-image:linear-gradient(135deg,#000 30%,rgba(0,0,0,.25));mask-image:linear-gradient(135deg,#000 30%,rgba(0,0,0,.25))}
+.mq-track.is-small{margin-top:clamp(6px,1vw,12px)}
+.mq-track.is-small .mq-item{font-size:clamp(1rem,1.6vw,1.45rem);font-weight:600;letter-spacing:.06em;color:var(--muted)}
+.mq-track.is-small .mq-row{gap:clamp(14px,2vw,28px);padding-right:clamp(14px,2vw,28px)}
+.mq-track.is-small .cmyk{width:34px;height:7px}
+.motion-ok .mq-track{animation:dc-mq 46s linear infinite}
+.motion-ok .mq-track.is-small{animation-duration:58s;animation-direction:reverse}
+.marquee:hover .mq-track,.fx-paused .mq-track{animation-play-state:paused}
+@keyframes dc-mq{to{transform:translate3d(-50%,0,0)}}
+
+/* ---------- 03 区块大号描边编号 ---------- */
+section[data-index]{position:relative;isolation:isolate}
+section[data-index]::before{
+  content:attr(data-index);position:absolute;z-index:-1;pointer-events:none;
+  top:clamp(4px,1.4vw,24px);right:max(var(--gutter),calc((100% - var(--maxw)) / 2 + var(--gutter)));
+  font-size:clamp(4.2rem,11vw,10rem);font-weight:600;line-height:.8;letter-spacing:-.04em;font-variant-numeric:tabular-nums;
+  color:transparent;-webkit-text-stroke:1.2px rgba(27,73,200,.2);
+}
+
+/* ---------- 04 半调网点纹理 ---------- */
+/* 流程区：右上角一片向外渐淡的网点，缓慢斜向流动 */
+.sec-tint{position:relative;isolation:isolate;overflow:hidden}
+.sec-tint::after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle,rgba(27,73,200,.26) 0 1.7px,transparent 2.1px) 0 0/13px 13px;
+  -webkit-mask-image:radial-gradient(ellipse 55% 85% at 100% 0%,#000 0%,rgba(0,0,0,.35) 45%,transparent 72%);
+          mask-image:radial-gradient(ellipse 55% 85% at 100% 0%,#000 0%,rgba(0,0,0,.35) 45%,transparent 72%);
+}
+.motion-ok .sec-tint::after{animation:dc-dots 26s linear infinite}
+.fx-paused .sec-tint::after{animation-play-state:paused}
+@keyframes dc-dots{to{background-position:130px 65px}}
+
+/* 案例区：左下角一片静态网点 */
+#cases{position:relative;isolation:isolate}
+#cases::after{
+  content:"";position:absolute;left:0;bottom:0;width:min(56vw,720px);height:70%;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle,rgba(18,20,22,.16) 0 1.5px,transparent 1.9px) 0 0/12px 12px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 70% at 0% 100%,#000,transparent 70%);
+          mask-image:radial-gradient(ellipse 70% 70% at 0% 100%,#000,transparent 70%);
+}
+/* 案例封面右下角的色标条 */
+.case-cover::after{content:"";position:absolute;right:14px;bottom:14px;width:46px;height:9px;z-index:2;
+  background:linear-gradient(90deg,#00aeef 0 25%,#ec008c 0 50%,#fff200 0 75%,#231f20 0);box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+
+/* 服务对象条末尾的色标 */
+.strip-row::after{content:"";margin-left:auto;align-self:center;width:52px;height:10px;flex:none;
+  background:linear-gradient(90deg,#00aeef 0 25%,#ec008c 0 50%,#fff200 0 75%,#231f20 0)}
+
+/* 页脚大字“大成新华”：用半调网点填充文字，像一块印版 */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .foot-word{
+    color:transparent;
+    background:radial-gradient(circle,rgba(134,163,255,.34) 0 2.2px,transparent 2.7px) 0 0/9px 9px,
+               linear-gradient(180deg,#1d2125,#1d2125);
+    -webkit-background-clip:text;background-clip:text;
+  }
+}
+
+/* ---------- 05 大图局部穿插 ---------- */
+/* 通用：一个圆角窗口里显示主视觉图的某个局部；图片比窗口高，留出视差移动的余量 */
+.crop{position:relative;overflow:hidden;border-radius:var(--r-l);background:var(--paper-2);isolation:isolate}
+.crop img{position:absolute;left:0;top:-12%;width:100%;height:124%;max-width:none;object-fit:cover}
+
+/* 首页“公司介绍”左栏：一张竖幅局部（蓝色墨浪） */
+.crop--about{margin-top:clamp(24px,3vw,40px);height:clamp(240px,30vw,420px)}
+.crop--about img{object-position:16% 74%}
+.crop--about figcaption{position:absolute;left:16px;bottom:14px;z-index:3;display:flex;align-items:center;gap:10px;
+  font-size:.74rem;letter-spacing:.08em;color:var(--ink-2);padding:.25em .8em;border-radius:99px;background:rgba(255,255,255,.7)}
+
+/* 首页联系区：蓝底上叠一张单色化的局部（网点与玻璃），向左渐隐，文字区保持干净 */
+.cta-img{position:absolute;right:0;top:-14%;width:64%;height:128%;max-width:none;object-fit:cover;object-position:80% 34%;
+  z-index:-1;pointer-events:none;mix-blend-mode:luminosity;opacity:.55;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) 32%,#000 60%);
+          mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.6) 32%,#000 60%)}
+
+/* 各内页标题区下方的图片横幅（由 js/main.js 插入），每个栏目取图片的不同局部 */
+.ph-band{margin-top:clamp(22px,3.6vw,44px);height:clamp(110px,14vw,200px)}
+.page-hero--detail .ph-band{height:clamp(90px,10vw,150px)}
+.ph-band .cmyk{position:absolute;right:16px;bottom:14px;z-index:3;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+/* 横幅左侧一片网点，和标题区的纸白过渡 */
+.ph-band::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(circle,rgba(243,242,238,.9) 0 1.8px,transparent 2.2px) 0 0/10px 10px;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 18%,transparent 40%);
+          mask-image:linear-gradient(90deg,#000 0,rgba(0,0,0,.5) 18%,transparent 40%)}
+[data-page="services"] .ph-band img{object-position:62% 38%}
+[data-page="cases"] .ph-band img{object-position:28% 66%}
+[data-page="news"] .ph-band img{object-position:84% 72%}
+[data-page="training"] .ph-band img{object-position:46% 52%}
+[data-page="resources"] .ph-band img{object-position:74% 24%}
+[data-page="about"] .ph-band img{object-position:18% 70%}
+[data-page="contact"] .ph-band img{object-position:92% 82%}
+[data-page="register"] .ph-band img,
+[data-page="login"] .ph-band img,
+[data-page="member"] .ph-band img{object-position:56% 44%}
+[data-page="wechat"] .ph-band img{object-position:36% 36%}
+
+/* ---------- 06 网点飘落分隔条 ---------- */
+/* 静态样子：底部四行半调网点，两端渐隐。js/dot-fall.js 启用后（.df-on）改由画布绘制“网点落下”的过程 */
+.dot-rule{position:relative;height:clamp(48px,5vw,64px);margin:clamp(8px,1.6vw,20px) 0}
+.dot-rule::before{content:"";position:absolute;left:0;right:0;bottom:10px;height:36px;pointer-events:none;
+  background:radial-gradient(circle,var(--blue) 0 2.4px,transparent 2.8px) 0 100%/9px 9px repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,.35) 12%,#000 45%,rgba(0,0,0,.6) 70%,transparent);
+          mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,.35) 12%,#000 45%,rgba(0,0,0,.6) 70%,transparent)}
+.dot-rule.df-on::before{display:none}
+/* 画布比分隔条高，向上伸出：网点从上方（上一个区块的底部）落下来 */
+.df-canvas{position:absolute;left:0;bottom:0;width:100%;height:var(--df-h,240px);pointer-events:none;z-index:3;display:block}
+
+/* ---------- 08 服务流程时间线（首页 .steps[data-steps]，配合 js/steps.js） ---------- */
+/* 默认（没有脚本或关闭动效）：五步都是点亮的白色卡片，顶部一条完整的蓝色进度线 */
+.steps[data-steps]{position:relative;padding-top:58px}
+.steps[data-steps]::before,.steps[data-steps]::after{content:"";position:absolute;left:22px;right:0;top:21px;height:2px;border-radius:2px;pointer-events:none}
+.steps[data-steps]::before{background:rgba(27,73,200,.16)}
+.steps[data-steps]::after{background:var(--blue);transform-origin:left center;transform:scaleX(var(--p,1))}
+.steps[data-steps]>li{border-top:0;padding:20px 20px 22px;border-radius:var(--r,16px);background:rgba(255,255,255,.75);
+  transition:background-color .45s ease,box-shadow .45s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.steps[data-steps]>li::after{display:none}
+.st-ico{position:absolute;left:20px;top:-58px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:var(--blue);border:2px solid var(--blue);color:#fff;
+  transition:background-color .35s,color .35s,border-color .35s,transform .45s cubic-bezier(.2,.7,.2,1)}
+.st-ico svg{width:21px;height:21px}
+/* 时间线启用后：还没走到的步骤变淡，编号变成描边，图标变成空心 */
+.steps.is-live>li{background:rgba(255,255,255,.3)}
+.steps.is-live>li::before{color:transparent;-webkit-text-stroke:1.2px rgba(27,73,200,.45)}
+.steps.is-live>li p{opacity:.6;transition:opacity .35s}
+.steps.is-live>li .st-ico{background:#fff;border-color:rgba(27,73,200,.3);color:rgba(27,73,200,.55)}
+.steps.is-live>li.is-on{background:#fff;box-shadow:0 24px 44px -30px rgba(18,20,22,.38);transform:translateY(-6px)}
+.steps.is-live>li.is-on::before{color:var(--blue);-webkit-text-stroke:0 transparent}
+.steps.is-live>li.is-on p{opacity:1}
+.steps.is-live>li.is-on .st-ico{background:var(--blue);border-color:var(--blue);color:#fff;transform:scale(1.1)}
+@media (hover:hover) and (pointer:fine){
+  .steps[data-steps]>li:hover{transform:translateY(-9px);box-shadow:0 26px 46px -28px rgba(18,20,22,.42)}
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1080px){
+  /* 换成多行后，横向进度线没有意义，只保留每步的图标与点亮效果 */
+  .steps[data-steps]{row-gap:78px}
+  .steps[data-steps]::before,.steps[data-steps]::after{display:none}
+}
+@media (max-width:900px){
+  .crop--about{height:clamp(200px,52vw,340px)}
+  .cta-img{width:100%;opacity:.28;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 55%);mask-image:linear-gradient(180deg,transparent 0,#000 55%)}
+}
+@media (max-width:640px){
+  .strip-row::after{display:none}
+  section[data-index]::before{-webkit-text-stroke-width:1px}
+  .steps[data-steps]{padding-top:0;row-gap:12px}
+  .steps[data-steps]>li{padding:18px 64px 18px 16px}
+  .st-ico{left:auto;right:14px;top:16px;width:38px;height:38px}
+  .st-ico svg{width:18px;height:18px}
+}
+
+/* ---------- 07 暂停、减少动效、打印 ---------- */
+@media (prefers-reduced-motion:reduce){
+  .mq-track,.sec-tint::after{animation:none!important}
+  .df-canvas{display:none!important}
+  .dot-rule.df-on::before{display:block}
+}
+@media print{
+  .marquee,.df-canvas,.cta-img{display:none!important}
+}

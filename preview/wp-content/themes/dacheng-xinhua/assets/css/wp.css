@@ -1,0 +1,137 @@
+/* ==========================================================================
+   大成新华企业官网主题 · WordPress 专用样式
+   main.css / motion.css / decor.css / flip.css / hero-fx.css / intro.css 移植自 dacheng-demo（只做必要改动）；
+   本文件补充 WordPress 才有的部分：后台编辑器正文、分页、空状态、下载框、管理员工具条，
+   以及服务、流程数量不是 5 个时的版式。
+   ========================================================================== */
+
+/* ---------- 管理员登录后的顶部工具条：粘性页头让出位置 ---------- */
+.admin-bar .site-header{top:32px}
+@media (max-width:782px){ .admin-bar .site-header{top:46px} }
+@media (max-width:600px){ .admin-bar .site-header{top:0} }
+
+/* ---------- 页头：后台上传的标志、导航右侧按钮 ---------- */
+.brand .dc-logo{width:40px;height:40px;object-fit:contain;border-radius:8px;flex:none}
+.nav-actions .btn[aria-current="page"]{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ---------- 页脚：深底上的描边按钮（main.css 的 .site-footer a.btn 会把字色设成炭黑） ---------- */
+.site-footer a.btn.ghost-light{color:#fff}
+.site-footer a.btn.ghost-light:hover{color:var(--ink)}
+.dc-tel::after{content:none!important}
+
+/* ---------- 空状态（未发布内容时的诚实提示） ---------- */
+.dc-empty{display:flex;align-items:center;gap:14px;padding:22px 24px;border:1.5px dashed #bdb9b0;border-radius:var(--r-l);color:var(--muted);background:rgba(255,255,255,.5);margin:0 0 1.2em}
+.dc-empty p{margin:0}
+.dc-empty-symbol{width:12px;height:12px;border-radius:50%;flex:none;background:radial-gradient(circle,var(--blue) 0 35%,transparent 40%),var(--blue-l);box-shadow:0 0 0 6px var(--blue-l)}
+.sec-panel .dc-empty{background:var(--paper)}
+
+/* ---------- 通用小件 ---------- */
+.dc-muted{color:var(--muted);font-size:.92rem}
+.dc-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--muted);font-size:.9rem;margin:0 0 1.4em}
+.dc-h2-sm{font-size:clamp(1.5rem,2.6vw,2.2rem)}
+.dc-more{margin-top:clamp(20px,3vw,36px)}
+.dc-sub-head{margin-top:clamp(36px,5vw,64px)}
+.dc-about-tags{margin-top:clamp(20px,3vw,32px)}
+.news-tag time{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.case-sum{margin:0;color:var(--ink-2);font-size:.95rem}
+.case-cover .cv-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.case-card:hover .cv-photo{transform:scale(1.04)}
+.course-main h3 a{color:inherit;text-decoration:none}
+.course-main h3 a:hover{color:var(--blue)}
+
+/* ---------- 服务翻牌：数量不是 5 个时自动排列；有封面图时直接显示封面 ---------- */
+@media (min-width:641px){
+  .flip-grid:not([data-count="5"]){grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+  .flip-grid:not([data-count="5"]) .flip{grid-column:auto!important}
+}
+.flip-cover.is-photo img{transform:none;object-position:50% 50%}
+.flip:hover .flip-cover.is-photo img,.flip:focus-within .flip-cover.is-photo img{transform:scale(1.06)}
+
+/* ---------- 服务流程：步数不是 5 步时的列数 ---------- */
+@media (min-width:1081px){
+  .steps[data-count="1"],.steps[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps[data-count="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .steps[data-count="4"],.steps[data-count="7"],.steps[data-count="8"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .steps[data-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:clamp(40px,4vw,64px)}
+  .steps[data-count="6"],.steps[data-count="7"],.steps[data-count="8"]{padding-top:0}
+  .steps[data-count="6"]::before,.steps[data-count="6"]::after,.steps[data-count="7"]::before,.steps[data-count="7"]::after,.steps[data-count="8"]::before,.steps[data-count="8"]::after{display:none}
+  .steps[data-count="6"] .st-ico,.steps[data-count="7"] .st-ico,.steps[data-count="8"] .st-ico{position:static;margin-bottom:12px}
+}
+
+/* ---------- 关于页大图 ---------- */
+.dc-about-band{margin-top:clamp(36px,6vw,88px);height:clamp(220px,34vw,480px)}
+.dc-about-band img{object-position:18% 70%}
+.dc-about-band .cmyk{position:absolute;left:16px;bottom:14px;z-index:3;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+
+/* ---------- 正文（后台编辑器输出） ---------- */
+.prose{max-width:46em;overflow-wrap:anywhere}
+.prose>:first-child{margin-top:0}
+.prose h2{font-size:clamp(1.3rem,2vw,1.65rem);font-weight:600;letter-spacing:0;margin:2em 0 .7em;padding-top:1.1em;border-top:1px solid var(--line)}
+.prose>h2:first-child{padding-top:0;border-top:0}
+.prose h3{font-size:1.15rem;margin:1.6em 0 .5em}
+.prose h4{font-size:1rem;margin:1.4em 0 .4em}
+.prose p{max-width:none}
+.prose a{word-break:break-word}
+.article .prose ul{list-style:none;padding:0;margin:0 0 1.2em}
+.article .prose ul ul{margin:.3em 0 .3em .6em}
+.prose ol{padding-left:1.4em;margin:0 0 1.2em}
+.prose ol li{padding:.25em 0 .25em .2em}
+.prose ol li::marker{color:var(--blue);font-weight:600}
+.prose blockquote{margin:1.6em 0;padding:4px 0 4px 20px;border-left:3px solid var(--blue);color:var(--ink-2)}
+.prose img,.prose video{height:auto;border-radius:var(--r)}
+.prose figure{margin:1.6em 0}
+.prose figcaption,.prose .wp-element-caption{font-size:.85rem;color:var(--muted);margin-top:.6em}
+.prose table{width:100%;border-collapse:collapse;font-size:.95rem;margin:1.4em 0;display:block;overflow-x:auto}
+.prose th,.prose td{border-bottom:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+.prose th{border-bottom-color:var(--ink);font-weight:600}
+.prose hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+.prose code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:var(--paper-2);padding:.1em .35em;border-radius:4px}
+.prose pre{background:var(--ink);color:var(--on-dark);padding:16px 20px;border-radius:var(--r);overflow-x:auto}
+.prose pre code{background:none;padding:0;color:inherit}
+.prose .alignleft{float:left;margin:.3em 1.4em 1em 0;max-width:50%}
+.prose .alignright{float:right;margin:.3em 0 1em 1.4em;max-width:50%}
+.prose .aligncenter{margin-left:auto;margin-right:auto}
+.prose .wp-block-button__link{display:inline-flex;align-items:center;padding:.7em 1.4em;border-radius:999px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:600}
+.prose .wp-block-button__link:hover{background:var(--blue);color:#fff}
+.prose iframe{max-width:100%}
+.dc-article-cover{width:100%;height:auto;border-radius:var(--r-l);margin:0 0 clamp(20px,3vw,36px)}
+
+/* ---------- 下载资料 ---------- */
+.dc-download-box{margin-top:clamp(28px,4vw,48px);background:var(--white);border:1px solid var(--line)}
+.dc-download-box h2{font-size:1.3rem;margin:0 0 .6em;padding:0;border:0}
+.dc-file{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:0 0 1.2em}
+.dc-file-name{font-weight:600;word-break:break-all}
+.dc-res-table td:first-child a{color:var(--ink);text-decoration:none;font-weight:500}
+.dc-res-table td:first-child a:hover{color:var(--blue)}
+.dc-res-acts{white-space:nowrap}
+.dc-res-acts .btn{margin:2px 6px 2px 0}
+.dc-res-acts a.btn::after{display:none}
+
+/* ---------- 返回链接、联系页 ---------- */
+.dc-back{margin-top:clamp(32px,5vw,56px)}
+.dc-back-link::after{content:none}
+.dc-back-link::before{content:"←";display:inline-block;transition:transform var(--t-fast) var(--ease)}
+.dc-back-link:hover::before{transform:translateX(-4px)}
+.dc-contact-note{margin-top:clamp(24px,3vw,36px)}
+.contact-list a{color:var(--ink);text-decoration:none}
+.contact-list a:hover{color:var(--blue)}
+.dc-qr{text-align:center;justify-self:start}
+.dc-qr img{width:min(220px,100%);height:auto;margin:8px auto 12px;border-radius:var(--r-s)}
+
+/* ---------- 分页 ---------- */
+.dc-pagination{margin-top:clamp(28px,4vw,48px)}
+.dc-pagination .nav-links{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.dc-pagination .page-numbers{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 .9em;border-radius:99px;border:1px solid #bdb9b0;color:var(--ink);text-decoration:none;font-variant-numeric:tabular-nums;transition:background-color var(--t-fast),color var(--t-fast),border-color var(--t-fast)}
+.dc-pagination a.page-numbers:hover{border-color:var(--ink);background:var(--white)}
+.dc-pagination .page-numbers.current{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.dc-pagination .page-numbers.dots{border:0}
+.screen-reader-text{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width:640px){
+  .dc-res-table th:nth-child(2),.dc-res-table td:nth-child(2){display:none}
+  .prose .alignleft,.prose .alignright{float:none;margin:1em 0;max-width:100%}
+}
+@media print{
+  .dc-pagination,.nav-actions{display:none!important}
+}

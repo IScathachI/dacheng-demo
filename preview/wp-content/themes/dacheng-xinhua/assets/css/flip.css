@@ -1,0 +1,123 @@
+/* ==========================================================================
+   大成新华演示站 · 服务翻牌样式（第三版，独立模块）
+
+   结构（由 js/main.js 的 svcFlip() 生成）：
+     .flip-grid[data-flip-grid]
+       article.flip               ← 外层：只承接 motion.js 的进入（透明度 / 上移）与透视
+         .flip-turn               ← 中层：翻入动作 + 鼠标悬停时的轻微倾斜
+           .flip-inner            ← 内层：正反面翻转（0° / 180°）
+             .flip-face.flip-front  编号、图标、名称、“查看简介”按钮
+             .flip-face.flip-back   简短介绍、“了解详情”链接、“翻回正面”按钮
+
+   三层分开承接 transform，进入、倾斜、翻转互不覆盖。
+
+   两种模式：
+     默认（静态）  没有脚本、动效关闭或“减少动效”时：一张把正反面内容都展开的卡片，
+                   名称、介绍、详情链接全部可见，没有翻面按钮。
+     .is-flip      js/flip.js 启用后：正反面叠在同一格里做 3D 翻转。
+                   背对用户的一面用 visibility:hidden（并由脚本加 inert / aria-hidden），
+                   其中的链接和按钮不会进入键盘焦点序列。
+   ========================================================================== */
+
+/* ---------- 静态模式（默认） ---------- */
+.flip-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(12px,1.2vw,18px)}
+.flip{position:relative;min-width:0}
+.flip-turn,.flip-inner{height:100%}
+.flip-inner{display:flex;flex-direction:column;border-radius:var(--r-l,24px);overflow:hidden;background:var(--white,#fff)}
+.flip-face{--fp:clamp(18px,1.7vw,26px);display:flex;flex-direction:column;gap:14px;padding:var(--fp);min-width:0}
+/* 正面封面：主视觉图的一个局部（每张卡位置不同，见 js/main.js 的 FLIP_COVER），底部用网点过渡到白色；
+   悬停时图片放大并染上品牌蓝 */
+.flip-cover{position:relative;display:block;flex:none;margin:calc(var(--fp) * -1) calc(var(--fp) * -1) 0;height:clamp(118px,10vw,156px);
+  overflow:hidden;border-radius:var(--r-l,24px) var(--r-l,24px) 0 0;background:var(--paper-2,#e8e6df);isolation:isolate}
+.flip-cover img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;
+  transform-origin:var(--zo,50% 50%);transform:scale(var(--z,1.6));transition:transform .8s var(--ease,ease)}
+.flip-cover::before{content:"";position:absolute;inset:0;z-index:1;background:var(--blue,#1b49c8);mix-blend-mode:color;opacity:0;transition:opacity .45s ease}
+.flip-cover::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(circle,#fff 0 1.7px,transparent 2.1px) 0 0/8px 8px;
+  -webkit-mask-image:linear-gradient(180deg,transparent 42%,rgba(0,0,0,.7) 80%,#000);mask-image:linear-gradient(180deg,transparent 42%,rgba(0,0,0,.7) 80%,#000)}
+.flip-cover .cmyk{position:absolute;left:12px;top:12px;z-index:2;width:38px;height:8px;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+.flip:hover .flip-cover img,.flip:focus-within .flip-cover img{transform:scale(calc(var(--z,1.6) * 1.12))}
+.flip:hover .flip-cover::before,.flip:focus-within .flip-cover::before{opacity:.38}
+.flip-front{background:var(--white,#fff);color:var(--ink,#121416)}
+.flip-back{background:var(--blue,#1b49c8);color:#fff;flex:1}
+.flip-back:focus{outline:0}
+.flip-back:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+.flip-back :focus-visible{outline-color:#fff}
+.flip-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.flip-num{font-size:clamp(1.7rem,2.3vw,2.3rem);font-weight:500;line-height:1;color:var(--blue,#1b49c8);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.flip-back .flip-num{font-size:.82rem;font-weight:600;color:#c9d6fb;letter-spacing:.1em}
+.flip-ico{width:40px;height:40px;color:var(--ink,#121416);flex:none}
+.flip-ico svg{width:100%;height:100%}
+.flip-name{font-size:clamp(1.15rem,1.45vw,1.5rem);font-weight:500;line-height:1.3;letter-spacing:-.01em;margin:0}
+.flip-back-name{display:none;font-size:.92rem;font-weight:600;text-align:right}
+.flip-desc{margin:0;font-size:.95rem;line-height:1.72;color:#e9eefd}
+.flip-acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:auto;padding-top:6px}
+.flip-acts .btn{flex:none}
+
+/* 翻面按钮：静态模式下不需要，隐藏 */
+.flip-btn{display:none;align-items:center;justify-content:center;gap:.5em;min-height:44px;padding:.5em 1.1em;border-radius:99px;border:1.5px solid var(--ink,#121416);background:transparent;color:var(--ink,#121416);font:inherit;font-size:.9rem;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer;transition:background-color .2s,color .2s,border-color .2s}
+.flip-btn svg{width:17px;height:17px;flex:none;transition:transform .45s var(--ease,ease)}
+.flip-btn:hover{background:var(--ink,#121416);color:var(--paper,#f3f2ee)}
+.flip-btn:hover svg{transform:rotate(180deg)}
+.flip-btn--back{min-height:40px;padding:.4em 1em;border-color:rgba(255,255,255,.6);color:#fff}
+.flip-btn--back:hover{background:#fff;border-color:#fff;color:var(--blue,#1b49c8)}
+
+/* ---------- 翻牌模式 ---------- */
+.is-flip .flip{perspective:1400px;cursor:pointer}
+.is-flip .flip-turn{transform-style:preserve-3d;transform:rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg));transition:transform .4s var(--ease,ease)}
+.is-flip .flip-inner{display:grid;overflow:visible;background:none;border-radius:0;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.22,.9,.24,1);min-height:clamp(300px,25vw,390px)}
+.is-flip .flip.is-flipped .flip-inner{transform:rotateY(180deg)}
+.is-flip .flip-face{grid-area:1/1;border-radius:var(--r-l,24px);-webkit-backface-visibility:hidden;backface-visibility:hidden;box-shadow:0 24px 46px -30px rgba(18,20,22,.38);transition:visibility 0s linear .42s}
+.is-flip .flip-back{transform:rotateY(180deg)}
+/* 背对的一面：转过去之后再隐藏；转回来的一面立即可见 */
+.is-flip .flip:not(.is-flipped) .flip-back,
+.is-flip .flip.is-flipped .flip-front{visibility:hidden}
+.is-flip .flip:not(.is-flipped) .flip-front,
+.is-flip .flip.is-flipped .flip-back{visibility:visible;transition-delay:0s}
+.is-flip .flip-btn{display:inline-flex}
+.is-flip .flip-back-name{display:block}
+.is-flip .flip-front .flip-name{margin-top:auto}
+.is-flip .flip-front .flip-btn{align-self:stretch}
+
+/* 进入视口时的一次错峰翻入（依赖 motion.js 的 .motion-ok / .is-in / --d；没有它就直接显示） */
+.motion-ok .is-flip>.flip:not(.is-done) .flip-turn{transition:transform .95s cubic-bezier(.2,.8,.2,1) var(--d,0ms)}
+.motion-ok .is-flip>.flip:not(.is-in) .flip-turn{transform:rotateY(-80deg)}
+
+/* 桌面精确指针：悬停时卡片先掀起一角，提示可以翻面 */
+@media (hover:hover) and (pointer:fine){
+  .is-flip .flip:not(.is-flipped):hover .flip-inner{transform:rotateY(11deg)}
+  .is-flip .flip.is-flipped:hover .flip-inner{transform:rotateY(169deg)}
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1279px){
+  .flip-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .flip{grid-column:span 2}
+  .flip:nth-child(4),.flip:nth-child(5){grid-column:span 3}
+  .is-flip .flip-inner{min-height:clamp(250px,27vw,320px)}
+}
+@media (max-width:900px){
+  .flip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flip,.flip:nth-child(4){grid-column:auto}
+  .flip:nth-child(5){grid-column:1/-1}
+  .is-flip .flip-inner{min-height:250px}
+}
+@media (max-width:640px){
+  /* 手机：一列，卡片是横向的，改为上下翻（绕水平轴），更像翻一张纸卡 */
+  .flip-grid{grid-template-columns:minmax(0,1fr)}
+  .flip:nth-child(5){grid-column:auto}
+  .is-flip .flip-inner{min-height:0}
+  .is-flip .flip.is-flipped .flip-inner{transform:rotateX(180deg)}
+  .is-flip .flip-back{transform:rotateX(180deg)}
+  .motion-ok .is-flip>.flip:not(.is-in) .flip-turn{transform:rotateX(-70deg)}
+  .is-flip .flip-front .flip-name{margin-top:0}
+}
+
+/* ---------- 兜底 ---------- */
+@media (prefers-reduced-motion:reduce){
+  .is-flip .flip-turn,.is-flip .flip-inner{transition:none!important}
+  .motion-ok .is-flip>.flip .flip-turn{transform:none!important}
+}
+@media print{
+  .flip-btn{display:none!important}
+}

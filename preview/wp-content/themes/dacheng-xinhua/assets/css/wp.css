@@ -10,8 +10,11 @@
 @media (max-width:782px){ .admin-bar .site-header{top:46px} }
 @media (max-width:600px){ .admin-bar .site-header{top:0} }
 
-/* ---------- 页头：后台上传的标志、导航右侧按钮 ---------- */
+/* ---------- 页头：公司图形标志（或后台上传的标志）、导航右侧按钮 ---------- */
 .brand .dc-logo{width:40px;height:40px;object-fit:contain;border-radius:8px;flex:none}
+.brand .dc-mark{width:42px;height:42px;flex:none}
+.foot-brand{display:flex;align-items:center;gap:10px}
+.foot-brand .dc-mark{width:28px;height:28px;flex:none;color:#fff}
 .nav-actions .btn[aria-current="page"]{background:var(--blue);border-color:var(--blue);color:#fff}
 
 /* ---------- 页脚：深底上的描边按钮（main.css 的 .site-footer a.btn 会把字色设成炭黑） ---------- */
